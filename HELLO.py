@@ -91,7 +91,9 @@ def lo():
             print ("ciclo"+ str(x))
             x=x+1
             
-        return Modelo.validar(_correoL, _contrasenaL)
+        _bool=Modelo.validar(_correoL, _contrasenaL)
+        if _bool == True:
+            return redirect(url_for('indexx'))
         
 
     except Exception as e:
@@ -296,7 +298,9 @@ def formatexto():
    
            #llamar a la función
         if _nom and _cor and _eda and _dir and _car and _esc and _pro and _idi and _exp and _cur and _cel and _apt:
-            return Modelo.insertarpostext(_nom, _cor, _eda, _dir, _car, _esc, _pro, _idi, _exp, _cur, _cel, _apt, _vac, _cv)
+            _bool=Modelo.insertarpostext(_nom, _cor, _eda, _dir, _car, _esc, _pro, _idi, _exp, _cur, _cel, _apt, _vac, _cv)
+            if _bool == True:
+                return redirect(url_for('Gracias'))
         else:
             return json.dumps({'html':'<span>Datos faltantes</span>'})
 

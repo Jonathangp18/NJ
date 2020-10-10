@@ -14,7 +14,7 @@ mail = Mail()
 
 app = Flask(__name__)
 
-app.config['UPLOAD_PATH'] = 'uploads'
+app.config['UPLOAD_PATH'] = '/static/uploads'
 app.config['UPLOAD_EXTENSIONS'] = ['.pdf']
 app.config['MAIL_SERVER'] = 'SMTP.gmail.com'
 app.config['MAIL_PORT'] = 587

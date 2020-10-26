@@ -11,23 +11,23 @@
 
 		
       <form action="/formatexto" method="POST">
-        <h1>Gracias por tu interes</h1>
+        <h1>Llena los campos</h1>
         <div class="social-container">			
         </div>
-		<input class="form-input" id="txt-input" type="text" placeholder="Nombre" required name="nom"> 
-        <input class="form-input" id="txt-input" type="email" placeholder="Correo" required name="cor">  
-        <input class="form-input" id="txt-input" type="number" placeholder="Edad" required name="eda">
-        <input class="form-input" id="txt-input" type="text" placeholder="Direccion" required name="dir">
-        <input class="form-input" id="txt-input" type="text" placeholder="Carrera" required name="car">        
-       <input class="form-input" id="txt-input" type="text" placeholder="Escuela" required name="esc">         
-        <input class="form-input" id="txt-input" type="number" placeholder="Promedio actual" required name="pro">        
-       <input class="form-input" id="txt-input" type="text" placeholder="Idiomas" required name="idi">
-        <input class="form-input" id="txt-input" type="text" placeholder="Experiencia" required name="exp">
-        <input class="form-input" id="txt-input" type="text" placeholder="Cursos" required name="cur">
-        <input class="form-input" id="txt-input" type="number" placeholder="Celular" required name="cel">
-		<input class="form-input" id="txt-input" type="text" placeholder="Aptitudes" required name="apt">
-		<input class="form-input" id="txt-input" type="text" placeholder="Vacante" required name="vac">  
-		<input class="form-input" id="txt-input" type="text" value="{{pdfs}}" readonly placeholder="Vacante" required name="cv">
+		<input class="form-input" id="txt-input" type="text" placeholder="Nombre" required name="nom" value="{{name}}"> 
+        <input class="form-input" id="txt-input" type="email" placeholder="Correo" required name="cor" value="{{correo}}">  
+        <input class="form-input" id="txt-input" type="number" placeholder="Edad" required name="eda" value="{{edad}}">
+        <input class="form-input" id="txt-input" type="text" placeholder="Direccion" required name="dir" value="{{dir}}">
+        <input class="form-input" id="txt-input" type="text" placeholder="Carrera" required name="car" value="{{lic}}">        
+       <input class="form-input" id="txt-input" type="text" placeholder="Escuela" required name="esc" value="{{esc}}">         
+        <input class="form-input" id="txt-input" type="number" step="0.01" placeholder="Promedio actual" required name="pro" value="{{prom}}">        
+       <input class="form-input" id="txt-input" type="text" placeholder="Idiomas" required name="idi" value="{{idi}}">
+        <input class="form-input" id="txt-input" type="text" placeholder="Experiencia" required name="exp" value="{{exp}}">
+        <input class="form-input" id="txt-input" type="text" placeholder="Cursos" required name="cur" value="{{cur}}">
+        <input class="form-input" id="txt-input" type="number" placeholder="Celular" required name="cel" value="{{cel}}">
+		<input class="form-input" id="txt-input" type="text" placeholder="Aptitudes" required name="apt" value="{{apt}}">
+		<input class="form-input" id="txt-input" type="hidden" placeholder="Vacante" required name="vac" value="{{vac}}">  
+		<input class="form-input" id="txt-input" type="hidden" value="{{pdfs}}" readonly placeholder="Vacante" required name="cv">
 
         <button type="submit" >Enviar</button>
 	  </form>
@@ -55,8 +55,8 @@
     <div class="overlay-container">
       <div class="overlay">
         <div class="overlay-panel overlay-right">
-          <h1>Requerimientos de los campos</h1>
-          <p>Se lo más especifico y llena los campos solicitados </p>
+          <h1>¡Tu PDF ya fue subido!</h1>
+          <p>Por favor verifique y llena los campos faltantes.</p>
         </div>
         <div class="overlay-panel overlay-left">
           <h1>Requerimentos del PDF</h1>

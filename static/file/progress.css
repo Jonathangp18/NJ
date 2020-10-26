@@ -1,0 +1,94 @@
+*, *:after, *:before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans";
+  }
+  
+  
+  /* Form Progress */
+  .progreso {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+  .progreso .circulo,
+  .progreso .barra {
+    display: inline-block;
+    background: #fff;
+    width: 40px; height: 40px;
+    border-radius: 40px;
+    border: 1px solid #d5d5da;
+  }
+  .progreso .barra {
+    position: relative;
+    width: 70px;
+    height: 6px;
+    top: -23px;
+    margin-left: -5px;
+    margin-right: -5px;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+  .progreso .circulo .etiqueta {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 32px;
+    margin-top: 3px;
+    color: #b5b5ba;
+    font-size: 17px;
+  }
+  .progreso .circulo .titulo {
+    color: #b5b5ba;
+    font-size: 10px;
+    line-height: 30px;
+    margin-left: -5px;
+  }
+  
+  /* Done / Active */
+  .progreso .barra.hecho,
+  .progreso .circulo.hecho {
+    background: #eee;
+  }
+  .progreso .barra.activo {
+    background: linear-gradient(to right, #EEE 40%, #FFF 60%);
+  }
+  .progreso .circulo.hecho .etiqueta {
+    color: #FFF;
+    background: #8bc435;
+    box-shadow: inset 0 0 2px rgba(0,0,0,.2);
+  }
+  .progreso .circulo.hecho .titulo {
+    color: #444;
+  }
+  .progreso .circulo.activo .etiqueta {
+    color: #FFF;
+    background: #0c95be;
+    box-shadow: inset 0 0 2px rgba(0,0,0,.2);
+
+  }
+  .progreso .circulo.activo .titulo {
+    color: #0c95be;
+  }
+  .loader{
+    margin: 0 0 2em;
+    height: 100px;
+    width: 100%;
+    text-align: center;
+    padding: 1em;
+    margin: 0 auto 1em;
+    display: inline-block;
+    margin-top: 50%;
+    vertical-align: top;
+  }
+  
+  /*
+    Set the color of the icon
+  */
+  svg path,
+  svg rect{
+    fill: #FFF;
+  }

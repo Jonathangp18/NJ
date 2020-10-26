@@ -33,15 +33,20 @@
     </div>
     <div class="form-container sign-in-container">
 
-      
       <form action="" method="POST" enctype="multipart/form-data">
         <h1>Gracias por tu interes en nosotros</h1>
         <div class="social-container">
     </div>
     <span>Por favor llena los campos como se solicita</span>
-        <input class="form-input" id="txt-input" type="text" placeholder="Nombre" required name="lol">
-        <input class="form-input" id="txt-input" type="text" placeholder="Nombre de la vacante" required name="vac">
-        <input class="form-input" id="txt-input" type="file"  required name="Archivo">
+        <input class="form-input" id="txt-input" type="text" placeholder="Nombre" required name="name">
+		<select class="form-input" id="txt-input" type="text" placeholder="Nombre de la vacante" required name="vac">
+			{% for openvacante in openvacantes %}
+			<option>{{ openvacante.1}}</option>
+			{% endfor %} 
+		</select>
+		<input class="form-input" id="txt-input" type="file"  required name="Archivo">
+		<span>{{alert}}</span>
+		<br>
         <button  type="submit" type="submit">Enviar</button>
       </form>
 
@@ -159,6 +164,14 @@ form {
 }
 
 input {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+}
+
+select{
 	background-color: #eee;
 	border: none;
 	padding: 12px 15px;

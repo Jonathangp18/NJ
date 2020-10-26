@@ -21,14 +21,24 @@
     
   <body> 
      <header>
-<!--         <h3 class="text-center text-light">Tutorial</h3>-->
-         <h4 class="text-center text-light"><span class="badge badge-success">POSTULANTES ACEPTADOS</span></h4> 
-         <a href="/selectA" style="color: aliceblue; background-color:orange; text-align: right;">Postulantes Pedientes</a>
-         <a href="/selectC" style="color: aliceblue; background-color: crimson; text-align: right;">Postulantes Rechazados</a>
-     
-     </header>    
-      
-    <div class="container">  
+         <style>
+             header{
+    background: -webkit-linear-gradient(to right, #87CEFA, #4169E1);
+  background: linear-gradient(to right, #87CEFA, #4169E1);
+  
+}
+         </style>
+   
+<!--<h3 class="text-center text-light">Tutorial</h3>-->
+         <h2 class="text-center text-light"><span style="color: aliceblue;  font-size: 10; font-style: initial;"><b>POSTULANTES ACEPTADOS</b></span></h2> 
+         <a href="/dash" class="btndash" style="color: aliceblue; position:absolute; right: 490px; "><b>Vacantes</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
+         <a href="/selectA" class="btndash" style="color: aliceblue; position:absolute; right: 320px;"><b>Postulantes Pendientes</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
+         <a href="/selectC" class="btndash" style="color: aliceblue; position:absolute; right: 140px;"><b>Postulantes Rechazados</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
+         <a href="/"  class="btndash" style="color: aliceblue; position:absolute; right: 35px;"><b>Cerrar sesión</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+    
+     </header>  
+     <div class="container">  
     </div>    
     <br>  
     <div class="container">
@@ -38,59 +48,271 @@
                             
                         <table id="tablaPersonas" class="table table-striped table-bordered table-condensed" style="width:100%">
                         <thead class="text-center">
-                            <tr>
-                                <th style="display: none;">id</th>
-                                <th>Nombre</th>
-                                <th>Edad</th>
-                                <th>Dirección</th>
-                                <th style="display: none;">Licenciatura</th>
-                                <th style="display: none;">Escuela</th>
-                                <th style="display: none;">Promedio</th>
-                                <th style="display: none;">Idiomas</th>  
-                                <th style="display: none;">Experiencia</th>
-                                <th style="display: none;">Cursos</th>
-                                <th style="display: none;">Aptitudes</th>
-                                <th >Email</th>
-                                <th  >Telefono</th>  
-                                <th  style="display: none;">Estatus</th>
-                                <th >Vacante</th>
-                                <th >cv</th>
-                                <th  >Acciones</th>
-                                
-                                
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for postulante in postulantes %}
-                            <tr>
-                                <td style="display: none;">{{ postulante.0 }}</td> 
-                                <td >{{ postulante.1 }}</td>                                
-                                <td>{{ postulante.3 }}</td>
-                                <td>{{ postulante.4 }}</td>
-                                <td style="display: none;">{{ postulante.5 }}</td>
-                                <td style="display: none;">{{ postulante.6 }}</td>
-                                <td style="display: none;">{{ postulante.7 }}</td>
-                                <td style="display: none;">{{ postulante.8 }}</td>
-                                <td style="display: none;">{{ postulante.9 }}</td>
-                                <td style="display: none;">{{ postulante.10 }}</td>
-                                <td style="display: none;">{{ postulante.12 }}</td>
-                                <td >{{ postulante.2 }}</td>
-                                <td>{{ postulante.11 }}</td>
-                                <td style="display: none;">{{ postulante.14 }}</td>
-                                <td >{{ postulante.13 }}</td>
-                                <td ><a href="../static/uploads/{{postulante.15 }}" download="{{ postulante.15 }}">{{ postulante.15 }}</a></td>
-                                <td></td>                                    
-                            </tr> 
-                            {% endfor %}                               
-                        </tbody>                                     
-                    </ul>        
-                       </table>                    
-                    </div>
+                          <tr>
+                            <th style="display: none;">id</th>
+                            <th>Nombre</th>
+                            <th>Edad</th>
+                            <th style="display: none;">Dirección</th>
+                            <th style="display: none;">Licenciatura</th>
+                            <th style="display: none;">Escuela</th>
+                            <th style="display: none;">Promedio</th>
+                            <th style="display: none;">Idiomas</th>  
+                            <th style="display: none;">Experiencia</th>
+                            <th style="display: none;">Cursos</th>
+                            <th style="display: none;">Aptitudes</th>
+                            <th >Email</th>
+                            <th  >Teléfono</th>  
+                            <th  style="display: none;">Estatus</th>
+                            <th  style="display: none;">Vacante</th>
+                            <th  style="display: none;">Comentarios</th>
+                            <th >cv</th>
+                            <th >Compatibilidad</th>
+                            <th  >Acciones</th>
+                            
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for postulante in postulantes %}
+                        <tr class="sombra">
+                            <td style="display: none;">{{ postulante.0 }}</td> 
+                            <td ><a class="btnDetalle"><p style="color:#4CADF4;"><u>{{ postulante.1 }}</u></p></a></td>                                
+                            <td>{{ postulante.3 }}</td>
+                            <td style="display: none;">{{ postulante.4 }}</td>
+                            <td style="display: none;">{{ postulante.5 }}</td>
+                            <td style="display: none;">{{ postulante.6 }}</td>
+                            <td style="display: none;">{{ postulante.7 }}</td>
+                            <td style="display: none;">{{ postulante.8 }}</td>
+                            <td style="display: none;">{{ postulante.9 }}</td>
+                            <td style="display: none;">{{ postulante.10 }}</td>
+                            <td style="display: none;">{{ postulante.12 }}</td>
+                            <td >{{ postulante.2 }}</a></td>
+                            <td>{{ postulante.11 }}</td>
+                            <td style="display: none;">{{ postulante.14 }}</td>
+                            <td style="display: none;">{{ postulante.13 }}</td>
+                            <td style="display: none;">{{ postulante.16 }}</td>
+                            
+                            <td ><a href="../static/uploads/{{postulante.15 }}" download="{{ postulante.15 }}">{{ postulante.15 }}</a></td>
+                            <td>
+                              <div class='flx'>
+                                <!-- Example 75% -->
+                                <div class="flx-item">
+                                  <svg class="circle-progress" viewBox="0 0 36 36">
+                                    <path class='circle-path' d="M18 2a16 16 0 010 32 16 16 0 010-32" stroke-dasharray="{{ postulante.17 }}, 100"></path>
+                                    <text class='circle-text' x="50%" y="50%">{{ postulante.17 }} %</text>
+                                  </svg>
+                                </div>
+                            </td>  
+                            
+                            <td>
+                              {% if "Registrado" in postulante.14 %}
+                              <button class="btnComentar custom-btn btn-8" ><span><b>Entrevista</b></span></button>
+
+                              {% else %}
+                              <button class=" btnBorrar custom-btn btn-8"  style=" background-color: #f0ecfc;
+                              background-image: linear-gradient(315deg, #e03535 0%, #e03535 74%);" ><span><b>Rechazar</b></span></button>
+                              {% endif %}
+                            </td>                                    
+                        </tr> 
+                        {% endfor %}                               
+                    </tbody>                                     
+                </ul>        
+                   </table>                    
                 </div>
-        </div>  
-    </div>    
+            </div>
+    </div>  
+</div>    
+    
+    
+  <style>
+
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+    
+button {
+  margin: 20px;
+}
+
+.custom-btn {
+  width: 150px;
+  height: 60px;
+  color: #f0ecfc;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+}
+
+.btn-8 {
+  background-color: #f0ecfc;
+background-image: linear-gradient(315deg, #87CEFA 0%, #4169E1 74%);
+  line-height: 42px;
+  padding: 0;
+  border: none;
+}
+.btn-8 span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.btn-8:before,
+.btn-8:after {
+  position: absolute;
+  content: "";
+  right: 0;
+  bottom: 0;
+  background:#4169E1;
+  /*box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
+              -4px -4px 6px 0 rgba(116, 125, 136, .2), 
+    inset -4px -4px 6px 0 rgba(255,255,255,.5),
+    inset 4px 4px 6px 0 rgba(116, 125, 136, .3);*/
+  transition: all 0.3s ease;
+}
+.btn-8:before{
+   height: 0%;
+   width: 2px;
+}
+.btn-8:after {
+  width: 0%;
+  height: 2px;
+}
+.btn-8:hover:before {
+  height: 100%;
+}
+.btn-8:hover:after {
+  width: 100%;
+}
+.btn-8:hover{
+  background: transparent;
+}
+.btn-8 span:hover{
+  color: #4169E1;
+}
+.btn-8 span:before,
+.btn-8 span:after {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  background:#4169E1;
+  transition: all 0.3s ease;
+}
+.btn-8 span:before {
+  width: 2px;
+  height: 0%;
+}
+.btn-8 span:after {
+  height: 2px;
+  width: 0%;
+}
+.btn-8 span:hover:before {
+  height: 100%;
+}
+.btn-8 span:hover:after {
+  width: 100%;
+}
+  
+
+
+.flx {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 10vh;
+}
+.flx-item {
+  margin-right: .5rem;
+  margin-left: .5rem;
+}
+/* Circle Progress
+--------------------------------------*/
+/* Animacion */
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+.circle-progress {
+  display: block;
+  width: 120px;
+}
+.circle-path {
+  fill: #121617;
+  animation: progress 1s forwards;
+  stroke-linecap: round;
+  stroke-width: 2.8;
+  stroke: #00BCD4;
+}
+.circle-text {
+  fill: #fff;
+  font-size: .4rem;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-weight: 500;
+
+}
+  .loader{
+    margin: 0 0 2em;
+    height: 100px;
+    width: 100%;
+    text-align: center;
+    padding: 1em;
+    margin: 0 auto 1em;
+    display: inline-block;
+    margin-top: 50%;
+    vertical-align: top;
+  }
+  
+  /*
+    Set the color of the icon
+  */
+  svg path,
+  svg rect{
+    fill: #FFF;
+  }
+
+
+
+  </style>
+
       
 <!--Modal para CRUD-->
+<!--Circulo que carga-->
+<div class="modal fade" id="modalCRUD80" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="loader loader--style1" title="0">
+          <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           width="100px" height="100px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+          <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+            s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+            c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+          <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+            C22.32,8.481,24.301,9.057,26.013,10.047z">
+            <animateTransform attributeType="xml"
+              attributeName="transform"
+              type="rotate"
+              from="0 20 20"
+              to="360 20 20"
+              dur="0.5s"
+              repeatCount="indefinite"/>
+            </path>
+          </svg>
+        </div>
+  </div>
+</div>
+
+
 <div class="modal fade" id="modalCRUD" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -104,15 +326,7 @@
                 <div class="form-group">
                 <label for="nombre" class="col-form-label">Correo:</label>
                 <input type="text" name= "correo" readonly class="form-control" id="nombre">
-                </div>
-                <!--<div class="form-group">
-                <label for="pais" class="col-form-label">País:</label>
-                <input type="text" class="form-control" id="pais">
-                </div>                
-                <div class="form-group">
-                <label for="edad" class="col-form-label">Edad:</label>
-                <input type="number" class="form-control" id="edad">
-                </div>-->            
+                </div>          
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
@@ -126,8 +340,8 @@
 <div class="modal fade" id="modalCRUD2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header2">
-                <h5 class="modal-title2" id="exampleModalLabel2"></h5>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -136,19 +350,11 @@
                 <div class="form-group">
                 <label for="nombre" class="col-form-label">Correo:</label>
                 <input type="text" name= "correo" readonly class="form-control" id="nombre2">
-                </div>
-                <!--<div class="form-group">
-                <label for="pais" class="col-form-label">País:</label>
-                <input type="text" class="form-control" id="pais">
-                </div>                
-                <div class="form-group">
-                <label for="edad" class="col-form-label">Edad:</label>
-                <input type="number" class="form-control" id="edad">
-                </div>-->            
+                </div>           
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
-                <button type="submit" id="btnGuardar" class="btn btn-dark">Aceptar</button>
+                <button type="submit" id="btnGuardar2" class="btn btn-dark">Aceptar</button>
             </div>
         </form>    
         </div>
@@ -157,52 +363,164 @@
 <div class="modal fade" id="modalCRUD3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header3">
-                <h5 class="modal-title3" id="exampleModalLabel2"></h5>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
             </div>
-        <form id="formPersonas3" method="GET" action="">    
+
+
+             <!--##########################################3FORMAA PARA PESTAÑAS EMERGENTES DETALLES#################################3 -->
+        <form id="formPersonas3" method="POST" action="/editar2">    
             <div class="modal-body">
+              <div class="form-group">
+                <label for="pais" class="col-form-label">Nombre</label>
+                <input type="text" class="form-control" name="nm" id="nombre77">
+                </div>  
                 <div class="form-group">
-                    <label for="pais" class="col-form-label">Licenciatura</label>
-                    <input type="text" class="form-control" id="nombre7">
-                    </div>                
+                  <label for="pais" class="col-form-label">Email</label>
+                  <input type="text" class="form-control" id="nombre78" name="email">
+                  </div>  
+                  <div class="form-group">
+                    <label for="pais" class="col-form-label">Edad</label>
+                    <input type="text" class="form-control" id="nombre79" name="edad">
+                    </div>  
                     <div class="form-group">
-                    <label for="edad" class="col-form-label">Universidad:</label>
-                    <input type="text" class="form-control" id="nombre8">
-                    </div>
-                    <div class="form-group">
-                        <label for="edad" class="col-form-label">Promedio:</label>
-                        <input type="text" class="form-control" id="nombre9">
+                      <label for="pais" class="col-form-label">Dirección</label>
+                      <input type="text" class="form-control" id="nombre80" name="dir">
+                      </div>  
+                      <div class="form-group">
+                        <label for="pais" class="col-form-label">Carrera</label>
+                        <input type="text" class="form-control" id="nombre81" name="lic">
                         </div>  
                 <div class="form-group">
-                <label for="nombre" class="col-form-label">Aptitudes:</label>
-                <textarea type="text" name= "correo" readonly class="form-control" id="nombre3"></textarea>
+                    <label for="pais" class="col-form-label">Escuela</label>
+                    <input type="text" class="form-control" id="nombre7" name="uni">
+                    </div>                
+                    <div class="form-group">
+                    <label for="edad" class="col-form-label">Promedio</label>
+                    <input type="text" class="form-control" id="nombre8" name="prom">
+                    </div>
+                    <div class="form-group">
+                        <label for="edad" class="col-form-label">Lenguajes</label>
+                        <input type="text" class="form-control" id="nombre9" name="idio">
+                        </div>  
+                <div class="form-group">
+                <label for="nombre" class="col-form-label">Experiencia</label>
+                <input type="text"  class="form-control" id="nombre3" name="exp"></input>
                 </div>
             <div class="form-group">
-                <label for="nombre" class="col-form-label">Experiencia:</label>
-                <textarea type="text" name= "correo" readonly class="form-control" id="nombre4"></textarea>
+                <label for="nombre" class="col-form-label">Cursos</label>
+                <textarea type="text"  class="form-control" id="nombre4" name="cur"></textarea>
                 </div>
             <div class="form-group">
-                <label for="nombre" class="col-form-label">Cursos:</label>
-                <textarea type="text" name= "correo" readonly class="form-control" id="nombre5"></textarea>
+                <label for="nombre" class="col-form-label">Teléfono</label>
+                <textarea type="text"  class="form-control" id="nombre5" name="tele"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="nombre" class="col-form-label">Idiomas:</label>
-                    <textarea type="text" name= "correo" readonly class="form-control" id="nombre6"></textarea>
-                    </div>           
+                    <label for="nombre" class="col-form-label">Aptitudes</label>
+                    <textarea type="text"  class="form-control" id="nombre6" name="apt"></textarea>
+                    </div>  
+                    <div class="form-group">
+                      <label for="nombre" class="col-form-label">Vacante</label>
+                      <input type="text" class="form-control" id="nombre600" name="vacante"></input>
+                      </div>  
+                      <div class="form-group">
+                        <label for="nombre" class="col-form-label">Comentarios de las entrevistas</label>
+                        <textarea type="text" readonly  class="form-control" id="nombre55" ></textarea>
+                        </div> 
+                    <div class="form-group">
+                      <input readonly type="hidden" class="form-control" id="nombre90" name="iddd"></input>
+                      </div>         
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal">OK</button>
+                <button type="submit" id="btn81" class=" btnCome btn btn-dark" >Guardar cambios</button>
+          
             </div>
-        </form>    
-        </div>
+        </form>  
     </div>
-</div>  
+</div>
+</div>    
 
+ <!--##########################################3FORMAA PARA PESTAÑAS EMERGENTES COMENTARIOS#################################3 -->
+ <div class="modal fade" id="modalCRUD4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+ 
+ 
+ <form id="formPersonas55" method="POST" action="/coments">    
+            <div class="modal-body">
+                <div class="form-group">
+                    <input name= "comn" type="hidden" readonly id="iddd"></input>
+                </div>
 
+                <div class="form-group">
+                  <label for="pais" class="col-form-label">Nombre del postulante</label>
+                  <input type="text" class="form-control" readonly id="nombre100" required name="nombreee"></input>
+                  
+                  </div>  
+
+                    <div class="form-group">
+                    <label for="pais" class="col-form-label">Comentarios del postulante</label>
+                    <textarea type="text" class="form-control" id="comentar" required name="com"></textarea>
+                    
+                    </div>                
+                    
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn80 btn btn-light" >Guardar</button>
+            </div>
+        </form>   
+        </div>
+        </div>
+        </div> 
+        
+     
+        <!--##########################################3ORMAA PARA  VEEEER PESTAÑAS EMERGENTES COMENTARIOS#################################3 -->
+        <div class="modal fade" id="modalCRUD88" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel2"></h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+       
+       
+       <form id="formPersonas56" method="POST" action="/coments">    
+                  <div class="modal-body">
+                      <div class="form-group">
+                          <input name= "comn" type="hidden" readonly id="idddq"></input>
+                      </div>
       
+                      <div class="form-group">
+                        <label for="pais" class="col-form-label">Nombre del postulante</label>
+                        <input type="text" class="form-control" readonly id="nombreeeq" required name="nombreee"></input>
+                        
+                        </div>  
+      
+                          <div class="form-group">
+                          <label for="pais" class="col-form-label">Comentarios del postulante</label>
+                          <textarea type="text" class="form-control" id="comentarq" required name="com"></textarea>
+                          
+                          </div>                
+                          
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" id="btn90" class="btn btn-light" >Cancelar</button>
+                      <button type="submit" class="btn900 btn btn-dark" >Guardar</button>
+                  </div>
+              </form>   
+              </div>
+              </div>
+              </div> 
+              
+
     <!-- jQuery, Popper.js, Bootstrap JS -->
     <script src="../static/file/jquery/jquery-3.3.1.min.js"></script>
     <script src="../static/file/popper/popper.min.js"></script>
@@ -211,8 +529,195 @@
     <!-- datatables JS -->
     <script type="text/javascript" src="../static/file/datatables/datatables.min.js"></script>    
      
-    <script type="text/javascript" src="../static/file/main11 copy 12.js"></script>  
+    <script type="text/javascript" src="../static/file/Postulantes.js"></script>  
+
+    <style>
+@import
+url('https://fonts.googleapis.com/css?family=Abel'); 
+html, body {
+background: #ffffff;
+  
+  font-family: Abel, Arial, Verdana, sans-serif;
+}
+
+table tbody .sombra:hover{
+        background-color:rgba(197, 228, 253, 0.87);
+    }
+
+.centerr {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+}
+
+.cardr {
+  width: 450px;
+  height: 250px;
+  	background: -webkit-linear-gradient(to right, #87CEFA, #4169E1);
+	background: linear-gradient(to right, hsl(203, 92%, 75%), #4169E1);
+  background: linear-gradient(#f8f8f8, #fff);
+  box-shadow: 0 8px 16px -8px rgba(0,0,0,0.4);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  margin: 1.5rem;
+}
+
+.cardr h1 {
+  text-align: center;
+}
+
+.cardr .additionalr {
+  position: absolute;
+  width: 150px;
+  height: 100%;
+  background: linear-gradient(#dE685E, #EE786E);
+  transition: width 0.4s;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.cardr.green .additionalr {
+  background: linear-gradient(#92bCa6, #A2CCB6);
+}
+
+
+.cardr:hover .additionalr {
+  width: 100%;
+  border-radius: 0 5px 5px 0;
+}
+
+.cardr .additionalr .user-cardr {
+  width: 150px;
+  height: 100%;
+  position: relative;
+  float: left;
+}
+
+.cardr .additionalr .user-cardr::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 10%;
+  right: -2px;
+  height: 80%;
+  border-left: 2px solid rgba(0,0,0,0.025);
+}
+
+.cardr .additionalr .user-cardr .levelr,
+.cardr .additionalr .user-cardr .pointsr {
+  top: 15%;
+  color: #f5f5f5;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  font-weight: bold;
+  background: rgba(0,0,0,0.15);
+  padding: 0.125rem 0.75rem;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.cardr .additionalr .user-cardr .pointsr {
+  top: 85%;
+}
+
+.cardr .additionalr .user-cardr svg {
+  top: 50%;
+}
+
+.cardr .additionalr .more-infor {
+  width: 300px;
+  float: left;
+  position: absolute;
+  left: 150px;
+  height: 100%;
+}
+
+.cardr .additionalr .more-infor h1 {
+  color: #fff;
+  margin-bottom: 0;
+}
+
+.cardr.greenr .additionalr .more-infor h1 {
+  color: #224C36;
+}
+
+.cardr .additionalr .coordsr {
+  margin: 0 1rem;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.cardr.green .additionalr .coordsr {
+  color: #325C46;
+}
+
+.cardr .additionalr .coordsr span + span {
+  float: right;
+}
+
+.cardr .additionalr .statsr {
+  font-size: 2rem;
+  display: flex;
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  top: auto;
+  color: #fff;
+}
+
+.cardr.green .additionalr .statsr {
+  color: #325C46;
+}
+
+.cardr .additionalr .statsr > div {
+  flex: 1;
+  text-align: center;
+}
+
+.cardr .additionalr .statsr i {
+  display: block;
+}
+
+.cardr .additionalr .statsr div.titler {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.cardr .additionalr .statsr div.valuer {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.5rem;
+}
+
+.cardr .additionalr .statsr div.value.infinity {
+  font-size: 2.5rem;
+}
+
+.cardr .generalr {
+  width: 300px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+.cardr .generalr .morer {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 0.9em;
+}
+
+    </style>
     
-    
+
   </body>
 </html>

@@ -241,6 +241,7 @@ def lo():
             user = request.form['correoL']
             _contrasenaL = request.form['contrasenaL']
             _bool=Modelo.validar(user, _contrasenaL)
+            session['user'] = user
         if _bool == True:
             session['user'] = user
             Modelo.eventos(user, 'login', 'se logeo el usuario')

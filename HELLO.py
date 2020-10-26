@@ -233,7 +233,8 @@ def form():
 
 @app.route('/log')
 def Login():
-    return render_template("login.html")
+    Modelo.eventos(user, 'Error al logear', 'error al intentar logearse')
+    return render_template('Login.html', alert='Tu contraseña o usuario es incorrecto')
     
 @app.route('/login',methods=['GET','POST'])
 def lo():
@@ -257,7 +258,7 @@ def lo():
             Modelo.eventos(user, 'Error al logear', 'error al intentar logearse')
             return render_template('Login.html', alert='Tu contraseña o usuario es incorrecto') 
     except:
-        return redirect(url_for('errorr')) 
+        return redirect(url_for('Login')) 
             
     finally:
             print("Lets go!")

@@ -230,12 +230,6 @@ def index():
 def form():
     return render_template("form.html")
 
-
-@app.route('/log')
-def Login():
-    Modelo.eventos(user, 'Error al logear', 'error al intentar logearse')
-    return render_template('Login.html', alert='Tu contraseña o usuario es incorrecto')
-    
 @app.route('/login',methods=['GET','POST'])
 def lo():
     try:
@@ -262,6 +256,12 @@ def lo():
             
     finally:
             print("Lets go!")
+
+@app.route('/log')
+def Login():
+    Modelo.eventos(session['user'], 'Error al logear', 'error al intentar logearse')
+    return render_template('Login.html', alert='Tu contraseña o usuario es incorrecto')
+    
 
 @app.route('/s')
 def s():

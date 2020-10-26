@@ -253,7 +253,6 @@ def lo():
             Modelo.eventos(user, 'Error al logear', 'error al intentar logearse')
             return render_template('Login.html', alert='Tu contraseña o usuario es incorrecto') 
     except:
-        Modelo.eventos(session['user'], 'Error al logear', 'error al intentar logearse')
         return redirect(url_for('Login')) 
             
     finally:

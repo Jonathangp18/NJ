@@ -64,7 +64,7 @@ def validar(_correoL, _contrasenaL):
             return False
 
     except:
-        return redirect(url_for('errorr')) 
+        return False 
         
     finally:
         cursor.close()

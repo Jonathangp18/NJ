@@ -251,8 +251,9 @@ def lo():
         if _bool == False:
             session['user'] = user
             Modelo.eventos(user, 'Error al logear', 'error al intentar logearse')
-            return render_template('Login.html', alert='Tu contraseña o usuario es incorrecto') 
+            return render_template('login.html', alert='Tu contraseña o usuario es incorrecto') 
     except:
+        Modelo.eventos(session['user'], 'Error al logear', 'error al intentar logearse')
         return redirect(url_for('Login')) 
             
     finally:
@@ -260,7 +261,7 @@ def lo():
 
 @app.route('/log')
 def Login():
-    return render_template('Login.html', alert='Tu contraseña o usuario es incorrecto')
+    return render_template('login.html', alert='Tu contraseña o usuario es incorrecto')
     
 
 @app.route('/s')

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, json, url_for, redirect,send_from_directory,  g, session
+from flask import Flask, render_template, request, json, url_for, redirect,send_from_directory,  g, session 
 from flaskext.mysql import MySQL
 import Modelo as Modelo
 import os
@@ -39,6 +39,8 @@ def vacante():
     try:
         _id = request.args.get('id')
         consulta = Modelo.Editpost(_id)
+        nombre1 = session['user']
+        Modelo.eventosinsertvac(nombre1)
         return render_template("Vacante.html", postulantes=consulta)
     except:
         return redirect(url_for('errorr')) 
@@ -80,7 +82,8 @@ def postedit():
         _apt = request.form.get('apt')
         _bool = Modelo.actualizarPostulante3(_id,_nm, _email, _edad, _dir, _lic, _uni, _prom, _idio, _exp, _cur, _tele, _apt, session['vacante'])
         if _bool == True:
-            Modelo.eventosv()
+            nombre1 = session['user']
+            Modelo.eventosv(nombre1)
             return redirect(url_for('selectA'))           
 
         if _bool == False:
@@ -108,7 +111,8 @@ def postedit2():
         _apt = request.form.get('apt')
         _bool = Modelo.actualizarPostulante3(_id,_nm, _email, _edad, _dir, _lic, _uni, _prom, _idio, _exp, _cur, _tele, _apt, session['vacante'])
         if _bool == True:
-            Modelo.eventosv()
+            nombre1 = session['user']
+            Modelo.eventosv(nombre1)
             return redirect(url_for('selectB'))           
 
         if _bool == False:
@@ -136,7 +140,8 @@ def postedit3():
         _apt = request.form.get('apt')
         _bool = Modelo.actualizarPostulante3(_id,_nm, _email, _edad, _dir, _lic, _uni, _prom, _idio, _exp, _cur, _tele, _apt, session['vacante'])
         if _bool == True:
-            Modelo.eventosv()
+            nombre1 = session['user']
+            Modelo.eventosv(nombre1)
             return redirect(url_for('selectC'))           
 
         if _bool == False:
@@ -177,6 +182,8 @@ def closevac():
         datos = request.get_json()
         print(datos)
         consulta = Modelo.Vacerrada(datos['vacante']) 
+        nombre1 = session['user']
+        Modelo.eventoscervac(nombre1)
         if consulta == True: 
             res="La vacante "+datos['vacante']+" fue cerrada."
             return res
@@ -194,6 +201,8 @@ def openvac():
         datos = request.get_json()
         print(datos)
         consulta = Modelo.Vabierta(datos['vacante']) 
+        nombre1 = session['user']
+        Modelo.eventosabrvac(nombre1)
         if consulta == True: 
             res="La vacante "+datos['vacante']+" fue abierta."
             return res
@@ -208,10 +217,18 @@ def openvac():
 @app.route("/editvac", methods=['POST'])
 def editvac():
     try:
-        print('Hi!')
-        datos = request.get_json()
-        print(datos)
-        consulta = Modelo.Editvac(datos['vacante'], datos['Id']) 
+        if 'user' in session:
+            nombre1 = session['user']
+            Modelo.eventosedivac(nombre1)
+        
+            print('Hiiii!')
+            datos = request.get_json()
+            print(datos)
+            consulta = Modelo.Editvac(datos['vacante'], datos['Id']) 
+
+
+
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         if consulta == True: 
             res="La vacante "+datos['vacante']+" fue abierta."
             return res
@@ -242,6 +259,8 @@ def lo():
             _contrasenaL = request.form['contrasenaL']
             _bool=Modelo.validar(user, _contrasenaL)
             session['user'] = user
+            
+            
         if _bool == True:
             session['user'] = user
             Modelo.eventos(user, 'login', 'se logeo el usuario')
@@ -291,10 +310,7 @@ def sig():
             elif x==4:
                  _contraseña = "{0}".format(value)
             print ("ciclo"+ str(x))
-            x=x+1
-          
-   
-           
+            x=x+1   
         if _nombre and _apellido and _correo and _celular and _contraseña:
             _bool = Modelo.insertaruser(_nombre, _apellido, _correo, _celular, _contraseña)
 
@@ -316,13 +332,15 @@ def sig():
 def correo():
      _p = request.args.get('correo')
      if _p:
-         msg = Message('Reclutamiento', sender= app.config['MAIL_USERNAME'], recipients = [_p])
-         msg.body = "Estimado candidato, agradecemos su interes, usted podra continuar con el proceso de selección."
-         mail.send(msg)
-         _bool = Modelo.actualizarPostulante(_p, session['vacante'])
-
+         post= _p.strip()
+         _bool = Modelo.actualizarPostulante(post, session['vacante'])
+         print(post)
          if _bool == True:
-             Modelo.eventosAC()
+             msg = Message('Reclutamiento', sender= app.config['MAIL_USERNAME'], recipients = [_p])
+             msg.body = "Estimado candidato, agradecemos su interes, usted podra continuar con el proceso de selección."
+             mail.send(msg)
+             nombre1 = session['user']
+             Modelo.eventosAC(nombre1)
              return redirect(url_for('selectB'))
          if _bool == False:
              return redirect(url_for('errorr')) 
@@ -332,13 +350,15 @@ def correo():
 def detalles():
      _p = request.args.get('correo')
      if _p:
-         msg = Message('Reclutamiento', sender= app.config['MAIL_USERNAME'], recipients = [_p])
-         msg.body = "Estimado candidato, agredecemos su interes pero no fue seleccionado para seguir con el proceso."
-         mail.send(msg)
-         
+         post= _p.strip()        
          _bool = Modelo.actualizarPostulante2(_p, session['vacante'])
+         print(post)
          if _bool == True:
-             Modelo.eventosRE()
+             msg = Message('Reclutamiento', sender= app.config['MAIL_USERNAME'], recipients = [_p])
+             msg.body = "Estimado candidato, agredecemos su interes pero no fue seleccionado para seguir con el proceso."
+             mail.send(msg)
+             nombre1 = session['user']
+             Modelo.eventosRE(nombre1)
              return redirect(url_for('selectC'))
              
          if _bool == False:
@@ -351,7 +371,8 @@ def detalles():
 def selectA():
     try:
         consulta = Modelo.SelectAll(session['vacante'])
-        Modelo.eventos1()
+        nombre1 = session['user']
+        Modelo.eventos1(nombre1)
         return render_template("Postulantes.html", postulantes=consulta)
     except:
         return redirect(url_for('errorr')) 
@@ -360,7 +381,8 @@ def selectA():
 def selectB():
     try:
         consulta = Modelo.SelectB(session['vacante'])
-        Modelo.eventos2()
+        nombre1 = session['user']
+        Modelo.eventos2(nombre1)
         return render_template("Postulantes2.html", postulantes=consulta)
     except:
         return redirect(url_for('errorr')) 
@@ -369,7 +391,8 @@ def selectB():
 def selectC():
     try:
         consulta = Modelo.SelectC(session['vacante'])
-        Modelo.eventos3()
+        nombre1 = session['user']
+        Modelo.eventos3(nombre1)
         return render_template("Postulantes3.html", postulantes=consulta)
     except:
         return redirect(url_for('errorr')) 
@@ -440,6 +463,8 @@ def comentaa():
              print(consultaa)
              #axx = { "alerta": resultado, "origen" : "Servidor", "idioma": consulta['documents'][0]['confidenceScores']['positive']}
              _bool2 = Modelo.cog(consultaa, _comn)
+             nombre1 = session['user']
+             Modelo.eventoscom(nombre1)
          if _bool == True:
             return redirect(url_for('selectA')) 
 
@@ -458,6 +483,8 @@ def comentaa():
 @app.route("/formtexto")
 def formadetexto():
     try:
+        nombre1 = session['user']
+        Modelo.eventoserror(nombre1)
         return render_template("FormaTexto.html")
     except:
         return redirect(url_for('errorr')) 

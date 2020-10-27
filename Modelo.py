@@ -135,7 +135,7 @@ def insertarpostulante(_name, _email, _age, _address, _career, _school, _average
 
 def Insertarpostulante(_arreglo, _vac, _archivo):
     for _registro in _arreglo:
-        print(insertarpostulante(_registro[0],_registro[1],_registro[2],_registro[3],_registro[4],_registro[5],_registro[6],_registro[7],_registro[8],_registro[9],_registro[10],_registro[11], _vac,_archivo))
+        print(insertarpostulante(_registro[0].strip(), _registro[1].strip(), _registro[2].strip(), _registro[3].strip(), _registro[4].strip(), _registro[5].strip(), _registro[6].strip(), _registro[7].strip(), _registro[8].strip(), _registro[9].strip(), _registro[10].strip(), _registro[11].strip(), _vac.strip(),_archivo))
     return True
 
 
@@ -464,6 +464,7 @@ def openvacante():
 #################################################################################### PARA EVENTOS
 def eventos(_A, _B, _C):
     try:
+        _A=_A
         conn = mysql.connect()
         cursor = conn.cursor()
         _TABLA="EVENTS"
@@ -481,11 +482,11 @@ def eventos(_A, _B, _C):
        cursor.close() 
        conn.close()
 
-def eventos1():
+def eventos1(nombre1):
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('1@gmail.com', 'Tabla de postulantes', 'Ver postulantes sin tratar')"
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Tabla de postulantes', 'Ver postulantes sin tratar')"
         cursor.execute(sqlCreateS)
         data = cursor.fetchall()
         if len(data) == 0:
@@ -498,11 +499,11 @@ def eventos1():
     finally:
        cursor.close() 
        conn.close()
-def eventos2():
+def eventos2(nombre1):
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('1@gmail.com', 'Tabla de postulantes1', 'Ver postulantes aceptados')"
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Tabla de postulantes1', 'Ver postulantes aceptados')"
         cursor.execute(sqlCreateS)
         data = cursor.fetchall()
         if len(data) == 0:
@@ -515,29 +516,11 @@ def eventos2():
     finally:
        cursor.close() 
        conn.close()
-def eventos3():
+def eventos3(nombre1):
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('1@gmail.com', 'Tabla de postulantes2', 'Ver postulantes rechazados')"
-        cursor.execute(sqlCreateS)
-        data = cursor.fetchall()
-        if len(data) == 0:
-            conn.commit()    
-        else:
-            return redirect(url_for('errorr')) 
-
-    except:
-        return redirect(url_for('errorr')) 
-    finally:
-       cursor.close() 
-       conn.close()
-
-def eventosR():
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('1@gmail.com', 'Recuperar contraseña', 'Se recuperó contraseña del usuario')"
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Tabla de postulantes2', 'Ver postulantes rechazados')"
         cursor.execute(sqlCreateS)
         data = cursor.fetchall()
         if len(data) == 0:
@@ -551,11 +534,11 @@ def eventosR():
        cursor.close() 
        conn.close()
 
-def eventosAC():
+def eventosR(nombre1):
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('1@gmail.com', 'enviar correo aceptar', 'Aceptar postulante con enviar correo')"
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Recuperar contraseña', 'Se recuperó contraseña del usuario')"
         cursor.execute(sqlCreateS)
         data = cursor.fetchall()
         if len(data) == 0:
@@ -569,11 +552,11 @@ def eventosAC():
        cursor.close() 
        conn.close()
 
-def eventosRE():
+def eventosAC(nombre1):
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('1@gmail.com', 'Enviar correo rechazar', 'rechazar postulante con enviar correo')"
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'enviar correo aceptar', 'Aceptar postulante con enviar correo')"
         cursor.execute(sqlCreateS)
         data = cursor.fetchall()
         if len(data) == 0:
@@ -587,11 +570,141 @@ def eventosRE():
        cursor.close() 
        conn.close()
 
-def eventosv():
+def eventosRE(nombre1):
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('1@gmail.com', 'Editar', 'Se editó un postulante')"
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Enviar correo rechazar', 'rechazar postulante con enviar correo')"
+        cursor.execute(sqlCreateS)
+        data = cursor.fetchall()
+        if len(data) == 0:
+            conn.commit()    
+        else:
+            return redirect(url_for('errorr')) 
+
+    except:
+        return redirect(url_for('errorr')) 
+    finally:
+       cursor.close() 
+       conn.close()
+
+def eventosv(nombre1):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Editar', 'Se editó un postulante')"
+        cursor.execute(sqlCreateS)
+        data = cursor.fetchall()
+        if len(data) == 0:
+            conn.commit()    
+        else:
+            return redirect(url_for('errorr')) 
+
+    except:
+        return redirect(url_for('errorr')) 
+    finally:
+       cursor.close() 
+       conn.close()
+
+def eventoserror(nombre1):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Error 404', 'La página falló')"
+        cursor.execute(sqlCreateS)
+        data = cursor.fetchall()
+        if len(data) == 0:
+            conn.commit()    
+        else:
+            return redirect(url_for('errorr')) 
+
+    except:
+        return redirect(url_for('errorr')) 
+    finally:
+       cursor.close() 
+       conn.close()
+
+def eventosinsertvac(nombre1):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Se insertó una vacante ', 'se creó una nueva vacante')"
+        cursor.execute(sqlCreateS)
+        data = cursor.fetchall()
+        if len(data) == 0:
+            conn.commit()    
+        else:
+            return redirect(url_for('errorr')) 
+
+    except:
+        return redirect(url_for('errorr')) 
+    finally:
+       cursor.close() 
+       conn.close()
+
+def eventoscervac(nombre1):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Se cerró una vacante ', 'se cerró una vacante')"
+        cursor.execute(sqlCreateS)
+        data = cursor.fetchall()
+        if len(data) == 0:
+            conn.commit()    
+        else:
+            return redirect(url_for('errorr')) 
+
+    except:
+        return redirect(url_for('errorr')) 
+    finally:
+       cursor.close() 
+       conn.close()
+
+def eventosabrvac(nombre1):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Se abrió una vacante ', 'se abrió una vacante')"
+        cursor.execute(sqlCreateS)
+        data = cursor.fetchall()
+        if len(data) == 0:
+            conn.commit()    
+        else:
+            return redirect(url_for('errorr')) 
+
+    except:
+        return redirect(url_for('errorr')) 
+    finally:
+       cursor.close() 
+       conn.close()
+
+def eventosedivac(nombre1):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        print("entro al sql")
+        print(nombre1)
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Se editó una vacante ', 'se editó una nueva vacante')"
+        cursor.execute(sqlCreateS)
+        print(sqlCreateS)
+        data = cursor.fetchall()
+        if len(data) == 0:
+            conn.commit()  
+            return True  
+        else:
+            return redirect(url_for('errorr')) 
+
+    except:
+        return redirect(url_for('errorr')) 
+    finally:
+       cursor.close() 
+       conn.close()
+
+def eventoscom(nombre1):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Se insertó un comentario ', 'se insertó un comentario')"
         cursor.execute(sqlCreateS)
         data = cursor.fetchall()
         if len(data) == 0:

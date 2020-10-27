@@ -315,7 +315,7 @@ def sig():
             _bool = Modelo.insertaruser(_nombre, _apellido, _correo, _celular, _contraseña)
 
         if _bool == True:
-            return redirect(url_for('indexx'))          
+            return redirect(url_for('index'))          
         if _bool == False:
             return redirect(url_for('errorr')) 
             

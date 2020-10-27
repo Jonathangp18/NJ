@@ -135,7 +135,7 @@ def insertarpostulante(_name, _email, _age, _address, _career, _school, _average
 
 def Insertarpostulante(_arreglo, _vac, _archivo):
     for _registro in _arreglo:
-        print(insertarpostulante(_registro[0],_registro[1],_registro[2],_registro[3],_registro[4],_registro[5],_registro[6],_registro[7],_registro[8],_registro[9],_registro[10],_registro[11], _vac,_archivo))
+        print(insertarpostulante(_registro[0].strip(), _registro[1].strip(), _registro[2].strip(), _registro[3].strip(), _registro[4].strip(), _registro[5].strip(), _registro[6].strip(), _registro[7].strip(), _registro[8].strip(), _registro[9].strip(), _registro[10].strip(), _registro[11].strip(), _vac.strip(),_archivo))
     return True
 
 

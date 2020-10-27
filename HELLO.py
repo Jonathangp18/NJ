@@ -664,7 +664,7 @@ def archivo():
                    _name=request.form['name']
                    _vac=request.form['vac']
                    _pdf=Modelo.Eventocv(_nomarchivo)
-                   return render_template('Form2.html', pdfs=_pdf, name=_name, correo=_encontrados3, edad=int(_encontrados4), dir=_encontrados5, lic=_encontrados6, esc=_encontrados7, prom=_encontrados8, idi=_encontrados9, exp=_encontrados10, cur=_encontrados11, cel= int(_encontrados12), vac=_vac)
+                   return render_template('form2.html', pdfs=_pdf, name=_name, correo=_encontrados3, edad=int(_encontrados4), dir=_encontrados5, lic=_encontrados6, esc=_encontrados7, prom=_encontrados8, idi=_encontrados9, exp=_encontrados10, cur=_encontrados11, cel= int(_encontrados12), vac=_vac)
             else:
                 _openvacante=Modelo.openvacante()
                 return render_template('form.html', openvacantes=_openvacante, alert='Tu archivo no es PDF')

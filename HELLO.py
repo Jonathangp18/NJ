@@ -660,7 +660,6 @@ def archivo():
                        _encontrados13=_encontrados13[0]
                    else:
                        _encontrados13=''
-                   print(_encontrados3[0])
                    _name=request.form['name']
                    _vac=request.form['vac']
                    _pdf=Modelo.Eventocv(_nomarchivo)

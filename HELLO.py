@@ -239,6 +239,28 @@ def editvac():
     except:
         return redirect(url_for('errorr')) 
 
+@app.route("/editmeta", methods=['POST'])
+def editmeta():
+    try:
+        if 'user' in session:
+            nombre1 = session['user']
+            Modelo.eventosedivac(nombre1)
+        
+            print('Hiiii!')
+            datos = request.get_json()
+            print(datos['plazo'])
+            consulta = Modelo.Editmeta(datos['meta'], datos['plazo'])
+            if consulta == True: 
+                res= datos['meta']
+                return res
+        else:
+            return redirect(url_for('errorr')) 
+
+        return res
+    except:
+        return redirect(url_for('errorr'))
+         
+
 @app.route('/')
 def index():
     return render_template("login.html")
@@ -333,7 +355,7 @@ def correo():
      _p = request.args.get('correo')
      if _p:
          post= _p.strip()
-         _bool = Modelo.actualizarPostulante(post, session['vacante'])
+         _bool = Modelo.actualizarPostulante(post, session['vacante'], session['user'])
          print(post)
          if _bool == True:
              msg = Message('Reclutamiento', sender= app.config['MAIL_USERNAME'], recipients = [_p])
@@ -351,7 +373,7 @@ def detalles():
      _p = request.args.get('correo')
      if _p:
          post= _p.strip()        
-         _bool = Modelo.actualizarPostulante2(_p, session['vacante'])
+         _bool = Modelo.actualizarPostulante2(_p, session['vacante'], session['user'])
          print(post)
          if _bool == True:
              msg = Message('Reclutamiento', sender= app.config['MAIL_USERNAME'], recipients = [_p])
@@ -454,7 +476,7 @@ def comentaa():
          _comn = request.form.get('comn')
 
          if _com and _comn:
-             _bool = Modelo.com(_com, _comn)
+             _bool = Modelo.com(_com, _comn, session['user'])
              consultaa = sentimientos.cogn(_com)
 
             # datos=request.get_json()
@@ -585,12 +607,24 @@ def errorr():
     except:
         return redirect(url_for('errorr')) 
 
+@app.route("/Ranking")
+def Ranking():
+    try:
+        Ranking=Modelo.Ranking()
+        Ranking2=Modelo.Ranking2()
+        Goal=Modelo.Goal()
+        print(Goal)
+        return render_template("RankingPost.html", Ranking=Ranking, Ranking2=Ranking2, Meta="TACOS", Goal=Goal)
+    except:
+        return redirect(url_for('errorr')) 
+
 @app.route("/f",methods=['GET', 'POST'])
 def archivo():
     try:
         if request.method == 'POST':
             _a=request.files['Archivo']
             _nomarchivo=_a.filename
+            print(_nomarchivo)
             if guardarArchivo(_a):
                print("Si se guardo!")
                _datos=extraerDatos(_a.filename)
@@ -669,6 +703,7 @@ def archivo():
                 return render_template('form.html', openvacantes=_openvacante, alert='Tu archivo no es PDF')
 
     except:
+        print("aaaaaaa")
         return redirect(url_for('errorr')) 
     _openvacante=Modelo.openvacante()
     return render_template('form.html', openvacantes=_openvacante, alert='')
@@ -698,7 +733,7 @@ def guardarArchivo(_archivo):
             return False
         _archivo.save(os.path.join(app.config['UPLOAD_PATH'], _archivo.filename))
         return True
-    return False
+    
 
 
 def ParseoTexto(_texto):

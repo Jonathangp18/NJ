@@ -277,11 +277,20 @@ def Recuperada(_correo, _contraseña):
 
 
 #################################################################################################################PARA ACTUALIZAR POSTULANTE
-def actualizarPostulante2(_postulante, _vac):
+def actualizarPostulante2(_postulante, _vac, _user):
     try:
         if _postulante:
             conn = mysql.connect()
             cursor = conn.cursor()
+            sqli="SELECT Answered, Total FROM USERS WHERE email = '"+_user+"'"
+            cursor.execute(sqli)
+            Answered = cursor.fetchall()
+            print(Answered[0][0])
+            print(Answered[0][1])
+            Answ = str(Answered[0][0] + 1)
+            total = str(Answered[0][1] + 1)
+            sqlint="UPDATE USERS SET Answered = "+Answ+", Total = "+total+" WHERE email = '"+_user+"'"
+            cursor.execute(sqlint)
             sqlCreateS="UPDATE CREATE_EMP SET estatus = 'Progreso', A_Circulo = 'circulo hecho', E_Barra = 'barra hecho', E_Circulo = 'circulo activo', A_Check = '&#10003;' WHERE id_cemp = "+_vac
             cursor.execute(sqlCreateS)
             _TABLA="POSTULANT"
@@ -325,11 +334,21 @@ def actualizarPostulante3(_id, _name, _email, _age, _address, _career, _school, 
 
 
 
-def actualizarPostulante(_postulante, _vac):
+def actualizarPostulante(_postulante, _vac, _user):
     try:
         if _postulante:
             conn = mysql.connect()
             cursor = conn.cursor()
+            sqli="SELECT Answered, Total FROM USERS WHERE email = '"+_user+"'"
+            cursor.execute(sqli)
+            Answered = cursor.fetchall()
+            print(Answered[0][0])
+            print(Answered[0][1])
+            Answ = str(Answered[0][0] + 1)
+            print(Answ)
+            total = str(Answered[0][1] + 1)
+            sqlint="UPDATE USERS SET Answered = "+Answ+", Total = "+total+" WHERE email = '"+_user+"'"
+            cursor.execute(sqlint)
             sqlCreateS="UPDATE CREATE_EMP SET estatus = 'Progreso', A_Circulo = 'circulo hecho', E_Barra = 'barra hecho', E_Circulo = 'circulo activo', A_Check = '&#10003;' WHERE id_cemp = "+_vac
             cursor.execute(sqlCreateS)
             _TABLA="POSTULANT"
@@ -390,7 +409,7 @@ def Vabierta(_vacante):
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        sqlCreateS="UPDATE CREATE_EMP SET estatus = 'abierta', A_Circulo = 'circulo activo', E_Barra = 'barra', E_Circulo = 'circulo', S_Barra = 'barra', S_Circulo = 'circulo', C_Barra = 'barra', C_Circulo = 'circulo', A_Check = '1', E_Check = '2', S_Check = '3', C_Check = '4' WHERE tittle = '"+_vacante+"'"
+        sqlCreateS="UPDATE CREATE_EMP SET estatus = 'abierta', A_Circulo = 'circulo activo', E_Barra = 'barra', E_Circulo = 'circulo', S_Barra = 'barra', S_Circulo = 'circulo', C_Barra = 'barra', C_Circulo = 'circulo', A_Check = '1', E_Check = '2', S_Check = '3', C_Check = '3' WHERE tittle = '"+_vacante+"'"
         cursor.execute(sqlCreateS)
         data = cursor.fetchall()
         if len(data)==0:
@@ -402,6 +421,7 @@ def Vabierta(_vacante):
     finally:
         cursor.close()
         conn.close()
+
 def Editvac(_vacante, _id):
     try:
         conn = mysql.connect()
@@ -418,6 +438,25 @@ def Editvac(_vacante, _id):
     finally:
         cursor.close()
         conn.close()
+
+def Editmeta(_meta, _fecha):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        sqlCreateS="UPDATE GOAL SET goal = '"+ _meta +"', end_date = '"+ _fecha +"'  WHERE ID_Goal = 1"
+        cursor.execute(sqlCreateS)
+        data = cursor.fetchall()
+        if len(data)==0:
+            return True
+        else:
+            return False
+    except:
+        print("help")
+        return redirect(url_for('errorr')) 
+    finally:
+        cursor.close()
+        conn.close()
+
 
 def insvacante(_emp):
     try:
@@ -739,12 +778,22 @@ def buscarU(_user):
             return redirect(url_for('errorr'))    
 
 #########################################################################COMENTARIOS UPDATE
-def com(_com, _comn):
+def com(_com, _comn, _user):
     try:
         if _com and _comn:
             conn = mysql.connect()
             cursor = conn.cursor()
             _TABLA="POSTULANT"
+            sqli="SELECT Interviewed, Total FROM USERS WHERE email = '"+_user+"'"
+            cursor.execute(sqli)
+            interviewed = cursor.fetchall()
+            print(interviewed[0][0])
+            print(interviewed[0][1])
+            inter = str(interviewed[0][0] + 1)
+            total = str(interviewed[0][1] + 1)
+            sqlint="UPDATE USERS SET Interviewed = "+inter+", Total = "+total+" WHERE email = '"+_user+"'"
+            cursor.execute(sqlint)
+
             sqlCreateSP="UPDATE "+_TABLA+" SET coments = '"+_com+"' WHERE id_post = '"+_comn+"'"
             cursor.execute(sqlCreateSP)
             data = cursor.fetchall()
@@ -791,3 +840,59 @@ def cog(consultaa, _comn):
     finally:
        cursor.close() 
        conn.close()
+
+################################################################# Ranking
+
+def Ranking():
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        _TABLA = "POSTULANT"
+        _condicion="Registrado"
+        sqlSelect = "Select name, last_name, Interviewed, Answered, Total from USERS order by Total DESC"
+        cursor.execute(sqlSelect)
+        data = cursor.fetchall()     
+        return data  
+
+    except:
+        return redirect(url_for('errorr')) 
+
+    finally:
+        cursor.close()
+        conn.close()
+
+def Ranking2():
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        _TABLA = "POSTULANT"
+        _condicion="Registrado"
+        sqlSelect = "Select name, last_name, Interviewed, Answered, Total from USERS order by Total DESC LIMIT 3,40"
+        cursor.execute(sqlSelect)
+        data = cursor.fetchall()     
+        return data  
+
+    except:
+        return redirect(url_for('errorr')) 
+
+    finally:
+        cursor.close()
+        conn.close()
+
+def Goal():
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        _TABLA = "POSTULANT"
+        _condicion="Registrado"
+        sqlSelect = "Select * from GOAL"
+        cursor.execute(sqlSelect)
+        data = cursor.fetchall()     
+        return data  
+
+    except:
+        return redirect(url_for('errorr')) 
+
+    finally:
+        cursor.close()
+        conn.close()

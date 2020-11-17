@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Ranking</title>
+  <meta name="viewport" content="width=device-width">
+<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.3/animate.min.css'>
+<link rel="stylesheet" href="../static/file/style.css">
+
+</head>
+<body>
+  <header>
+
+
+<!--<h3 class="text-center text-light">Tutorial</h3>-->
+    <h2 class="text-center text-light"><span style="color: aliceblue;  font-size: 10; font-style: initial;"> <a href="#" class="btndash" data-toggle="modal" data-target="#exampleModal" data-whatever="{{Goal[0][1]}}" data-whatever2="{{Goal[0][2]}}" style="color: aliceblue; "><b>META: </b><b id="goals">{{Goal[0][1]}}</b></a> &nbsp;&nbsp;&nbsp;&nbsp;</span></h2> 
+    <a href="#" class="btndash" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="color: aliceblue; position:absolute; left:20px; "><b>Fecha de vencimiento:  </b><b>{{Goal[0][2]}}</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/dash" class="btndash" style="color: aliceblue; position:absolute; right: 140px;"><b>Vacantes</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/" class="btndash" style="color: aliceblue; position:absolute; right: 35px;"><b>Cerrar sesión</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
+   
+
+</header>  
+
+
+
+  <div class="table_ranking">
+    <div class="col-sm-4 ranking r2 animated">
+     <div class="header">
+      <h3>Segundo Lugar</h3>
+     </div>
+     <div class="block1">
+      <h2>{{Ranking[1][0]}} {{Ranking[1][1]}}</h2>
+      <p><strong>Entrevistas realizadas</strong></p>
+      <p>{{Ranking[1][2]}}</p>
+     </div>
+     <div class="block2">
+      <p><strong>Personas contestadas</strong></p>
+      <p>{{Ranking[1][3]}}</p>
+     </div>
+     <div class="block3">
+      <p><strong>Total</strong></p>
+      <p>{{Ranking[1][4]}}</p>
+     </div>
+     <div class="block4">
+      <div class="place">2</div>
+     </div>
+    </div>
+   
+    <div class="col-sm-4 ranking r1 animated first">
+     <div class="header">
+      <h3>Primer Lugar</h3>
+     </div>
+     <div class="block1">
+      <h2>{{Ranking[0][0]}} {{Ranking[0][1]}}</h2>
+      <p><strong>Entrevistas realizadas</strong></p>
+      <p>{{Ranking[0][2]}}</p>
+     </div>
+     <div class="block2">
+      <p><strong>Personas contestadas</strong></p>
+      <p>{{Ranking[0][3]}}</p>
+     </div>
+     <div class="block3">
+      <p><strong>Total</strong></p>
+      <p>{{Ranking[0][4]}}</p>
+     </div>
+     <div class="block4">
+      <div class="place">1</div>
+     </div>
+    </div>
+   
+    <div class="col-sm-4 ranking r3 animated">
+     <div class="header">
+      <h3>Tercer Lugar</h3>
+     </div>
+     <div class="block1">
+      <h2>{{Ranking[2][0]}} {{Ranking[2][1]}}</h2>
+      <p><strong>Entrevistas realizadas</strong></p>
+      <p>{{Ranking[2][2]}}</p>
+     </div>
+     <div class="block2">
+      <p><strong>Personas contestadas</strong></p>
+      <p>{{Ranking[2][3]}}</p>
+     </div>
+     <div class="block3">
+      <p><strong>Total</strong></p>
+      <p>{{Ranking[2][4]}}</p>
+     </div>
+     <div class="block4">
+      <div class="place">3</div>
+     </div>
+    </div>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Personas entrevistadas</th>
+          <th scope="col">Personas contestadas</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% set cont = [4] %}
+        {% for Rank in Ranking2 %}
+        <tr>
+          <th scope="row">{{ cont[0] }}</th>
+          <td>{{ Rank.0 }} {{ Rank.1 }}</td>
+          <td>{{ Rank.2 }}</td>
+          <td>{{ Rank.3 }}</td>
+          <td>{{ Rank.4 }}</td>
+        </tr>
+        {% if cont.append(cont.pop() + 1) %}
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+   
+
+<!-- partial:index.partial.html -->
+
+<style>
+  .table{
+    color: #fff;
+  }
+</style>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">¿Cual será la siguiente meta?</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">Nombre de la Meta:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">Fecha de termino:</label>
+            <input type="date" class="form-control" id="select">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-info" id="btnguardar" data-dismiss="modal">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalCRUD3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="loader loader--style1" title="0">
+          <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           width="100px" height="100px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+          <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+            s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+            c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+          <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+            C22.32,8.481,24.301,9.057,26.013,10.047z">
+            <animateTransform attributeType="xml"
+              attributeName="transform"
+              type="rotate"
+              from="0 20 20"
+              to="360 20 20"
+              dur="0.5s"
+              repeatCount="indefinite"/>
+            </path>
+          </svg>
+        </div>
+  </div>
+</div>  
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script  src="../static/file/script.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  
+  
+  
+
+</body>
+</html>

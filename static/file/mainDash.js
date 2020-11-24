@@ -32,7 +32,28 @@ $(document).ready(function(){
     id=null;
     opcion = 1; //alta
 
-}); 
+    }); 
+
+    $(document).on("click", ".btnpostu", function(){
+        $("#formPersonas7").trigger("reset");
+        $(".modal-header7").css("background-color", "#87CEFA");
+        $(".modal-header7").css("color", "white");
+        $(".modal-title7").text("Postulantes");            
+        $("#modalCRUD7").modal("show");  
+        fila = $(this).closest("tr");
+        Pendientes = fila.find('td:eq(3)').text(); 
+        Entrevistados = fila.find('td:eq(4)').text(); 
+        Aceptados = fila.find('td:eq(5)').text(); 
+        Rechazados = fila.find('td:eq(6)').text(); 
+        $("#pendientess").val(Pendientes);
+        $("#entrevistados").val(Entrevistados); 
+        $("#aceptados").val(Aceptados); 
+        $("#rechazadoss").val(Rechazados);   
+        id=null;
+        opcion = 1; //alta
+    
+        }); 
+    
 
 $(document).on("click", "#btAbrir", function(){
     fila = $(this).closest("tr");
@@ -87,7 +108,7 @@ $(document).on("click", ".btnEdita", function(){
     $("#edad").val(edad);
     opcion = 2; //editar
     
-    $(".modal-header").css("background-color", "#007bff");
+    $(".modal-header").css("background-color", "#122548");
     $(".modal-header").css("color", "white");
     $(".modal-title").text("Editar Persona");            
     $("#modalCRUD").modal("show");  
@@ -162,7 +183,7 @@ $(document).on("click", "#btnCerrar", function(){
 
 $(document).on("click", ".btnvac", function(){    
     $("#formPersonas4").trigger("reset");
-    $(".modal-header4").css("background-color", "#4b8edb");
+    $(".modal-header4").css("background-color", "#122548");
     $(".modal-header4").css("color", "white");
     $(".modal-title4").text("Editar vacante o ver postulantes");            
     $("#modalCRUD4").modal("show");  
@@ -203,6 +224,12 @@ $(document).on("click", ".btndash", function(){
     
 });
 
+$(document).on("click", "#winner", function(){
+    console.log("dentro")
+    $("#modalCRUD3").modal("show");
+    
+});
+
 $(document).on("click", ".btnpost", function(){ 
     $("#modalCRUD4").modal("hide");
     $("#modalCRUD3").modal("show");                 
@@ -229,9 +256,95 @@ $("#formPersonas2").submit(function(e){
     });
     $("#modalCRUD").modal("hide");    
     
-});  
-var estatus = document.getElementById('estatus')
-var nombre = document.getElementById('nombre').style.backgroundColor = "#4b8edb"
-$(".nombre").css("background-color", "#4b8edb");
+}); 
 
+
+$(document).on("click", "#closee", function(){
+    var texto = {"vacante" : "prueba"};
+    $.ajax({
+        url: '/skipp',
+        method: 'POST',
+        headers:{
+            'Content-type':'application/json'
+        },
+        dataType: 'text',
+        data: JSON.stringify(texto),
+        success: function(texto){
+            $("#modalCRUD5").modal("hide"); 
+            $("#modalCRUD6").modal("hide");
+        }
+    });        
+
+  });
+
+  $(document).on("click", ".modall-btn", function(){
+    $("#modalCRUD5").modal("hide");
+    $("#modalCRUD6").modal("hide");  
+    $("#modalCRUD3").modal("show");  
+    
+  });
+
+var estatus = document.getElementById('estatus')
+var nombre = document.getElementById('nombre').style.backgroundColor = "#122548"
+$(".nombre").css("background-color", "#122548");
+
+var win = $("#win").val();
+
+if(win == "cerrada"){
+    $("#modalCRUD5").modal("show");
+}
+
+if(win == "cerradanoprimero"){
+    $("#modalCRUD6").modal("show");
+}
+
+for(i=0; i<200; i++) {
+    // Random rotation
+    var randomRotation = Math.floor(Math.random() * 360);
+    // Random width & height between 0 and viewport
+    var randomWidth = Math.floor(Math.random() * Math.max(document.documentElement.clientWidth, window.innerWidth || 0));
+    var randomHeight =  Math.floor(Math.random() * Math.max(document.documentElement.clientHeight, window.innerHeight || 0));
+    
+    // Random animation-delay
+    var randomAnimationDelay = Math.floor(Math.random() * 10);
+    console.log(randomAnimationDelay)
+  
+    // Random colors
+    var colors = ['#0CD977', '#FF1C1C', '#FF93DE', '#5767ED', '#FFC61C', '#8497B0']
+    var randomColor = colors[Math.floor(Math.random() * colors.length)];
+  
+    // Create confetti piece
+    var confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.top=randomHeight + 'px';
+    confetti.style.left=randomWidth + 'px';
+    confetti.style.backgroundColor=randomColor;
+    confetti.style.transform='skew(15deg) rotate(' + randomRotation + 'deg)';
+    confetti.style.animationDelay=randomAnimationDelay + 's';
+    document.getElementById("confetti-wrapper").appendChild(confetti);
+  }
+
+});
+
+var man = $("#man").val();
+if(man == 2){
+    $("#modalCRUD55").modal("show");  
+    
+}
+
+$(document).on("click", "#btncerrarrr", function(){           
+    
+    var texto = {"vacante" : "prueba"}; 
+    $.ajax({
+        url: '/sumsession',
+        method: 'POST',
+        headers:{
+            'Content-type':'application/json'
+        },
+        dataType: 'text',
+        data: JSON.stringify(texto),
+        success: function(texto){
+            $("#modalCRUD55").modal("hide"); 
+        }
+    }); 
 });

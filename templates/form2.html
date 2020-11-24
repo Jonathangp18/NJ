@@ -7,26 +7,111 @@
   <h2>Reclutadores</h2>
 
   <div class="container" id="container">
+	<style>
+		.tooltip {
+		  position: relative;
+		  border-bottom: transparent;
+		}
+		
+	 	.tooltiptext {
+		  visibility: hidden;
+		  width: 120px;
+		  background-color: #555;
+		  color: #fff;
+		  text-align: center;
+		  border-radius: 6px;
+		  padding: 5px 0;
+		  position: absolute;
+		  z-index: 1;
+		  bottom: 95%;
+		  left: 13%;
+		  margin-left: -60px;
+		  opacity: 0;
+		  transition: opacity 0.3s;
+		}
+		.tooltip{
+			border: none;
+			padding: 0px 0px;
+			margin: 0px 0;
+			width: 100%;
+		}
+		
+		.tooltiptext::after {
+		  content: "";
+		  position: absolute;
+		  top: 100%;
+		  left: 50%;
+		  margin-left: -5px;
+		  border-width: 5px;
+		  border-style: solid;
+		  border-color: #555 transparent transparent transparent;
+		}
+		
+		.tooltip:hover .tooltiptext {
+		  visibility: visible;
+		  opacity: 1;
+		}
+		</style>
+
     <div class="form-container sign-in-container">
 
 		
       <form action="/formatexto" method="POST">
         <h1>Llena los campos</h1>
         <div class="social-container">			
-        </div>
-		<input class="form-input" id="txt-input" type="text" placeholder="Nombre" required name="nom" value="{{name}}"> 
-        <input class="form-input" id="txt-input" type="email" placeholder="Correo" required name="cor" value="{{correo}}">  
-        <input class="form-input" id="txt-input" type="number" placeholder="Edad" required name="eda" value="{{edad}}">
-        <input class="form-input" id="txt-input" type="text" placeholder="Direccion" required name="dir" value="{{dir}}">
-        <input class="form-input" id="txt-input" type="text" placeholder="Carrera" required name="car" value="{{lic}}">        
-       <input class="form-input" id="txt-input" type="text" placeholder="Escuela" required name="esc" value="{{esc}}">         
-        <input class="form-input" id="txt-input" type="number" step="0.01" placeholder="Promedio actual" required name="pro" value="{{prom}}">        
-       <input class="form-input" id="txt-input" type="text" placeholder="Idiomas" required name="idi" value="{{idi}}">
-        <input class="form-input" id="txt-input" type="text" placeholder="Experiencia" required name="exp" value="{{exp}}">
-        <input class="form-input" id="txt-input" type="text" placeholder="Cursos" required name="cur" value="{{cur}}">
-        <input class="form-input" id="txt-input" type="number" placeholder="Celular" required name="cel" value="{{cel}}">
-		<input class="form-input" id="txt-input" type="text" placeholder="Aptitudes" required name="apt" value="{{apt}}">
-		<input class="form-input" id="txt-input" type="hidden" placeholder="Vacante" required name="vac" value="{{vac}}">  
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="text" placeholder="Nombre" required name="nom" value="{{name}}"> 
+			<span class="tooltiptext">Nombre</span>
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="email" placeholder="Correo" required name="cor" value="{{correo}}">  
+			<span class="tooltiptext">Correo</span>
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="number" placeholder="Edad" required name="eda" value="{{edad}}">
+			<span class="tooltiptext">Edad</span>
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="text" placeholder="Direccion" required name="dir" value="{{dir}}">
+			<span class="tooltiptext">Dirección</span>
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="text" placeholder="Carrera" required name="car" value="{{lic}}">
+			<span class="tooltiptext">Licenciatura</span>        
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="text" placeholder="Escuela" required name="esc" value="{{esc}}"> 
+			<span class="tooltiptext">Escuela</span>        
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="number" step="0.01" placeholder="Promedio actual" required name="pro" value="{{prom}}">        
+			<span class="tooltiptext">Promedio actual</span>  
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="text" placeholder="Idiomas" required name="idi" value="{{idi}}">
+			<span class="tooltiptext">Idiomas</span> 
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="text" placeholder="Experiencia" required name="exp" value="{{exp}}">
+			<span class="tooltiptext">Experiencia</span> 
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="text" placeholder="Cursos" required name="cur" value="{{cur}}">
+			<span class="tooltiptext">Cursos</span> 
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="number" placeholder="Celular" required name="cel" value="{{cel}}">
+			<span class="tooltiptext">Celular</span> 
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="text" placeholder="Aptitudes" required name="apt" value="{{apt}}">
+			<span class="tooltiptext">Aptitudes</span> 
+		</div>
+		<div class="tooltip">
+			<input class="form-input" id="txt-input" type="hidden" placeholder="Vacante" required name="vac" value="{{vac}}">  
+			<span class="tooltiptext">Vacante</span> 
+		</div>
 		<input class="form-input" id="txt-input" type="hidden" value="{{pdfs}}" readonly placeholder="Vacante" required name="cv">
 
         <button type="submit" >Enviar</button>

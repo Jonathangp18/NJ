@@ -10,7 +10,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../static/file/bootstrap/css/bootstrap.min.css">
     <!-- CSS personalizado --> 
-    <link rel="stylesheet" href="../static/file/main.css">  
+    <link rel="stylesheet" href="../static/file/main.css"> 
+    <link href="../static/file/statsdash.css" rel="stylesheet"> 
       
       
     <!--datables CSS básico-->
@@ -19,39 +20,164 @@
     <link rel="stylesheet"  type="text/css" href="../static/file/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css"> 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" href="../static/file/progress.css">      
+    <link rel="stylesheet" href="../static/file/progress.css">  
+    <link rel="stylesheet" href="../static/file/bell.css">      
   </head>
-    
   <body> 
+
+    <input type="hidden" id="man" value="{{sess}}">
+
      <header>
 <!--         <h3 class="text-center text-light">Tutorial</h3>-->
-        <h2 class="text-center text-light"><span style="color: aliceblue;  font-size: 10; font-style: initial;"><b>VACANTES</b></span></h2>
-        <a href="/" class="btndash" style="color: aliceblue; position:absolute; right: 35px;"><b>Cerrar sesión</b></a> &nbsp;&nbsp;&nbsp;&nbsp;  
-         <style>
-            header{
-            background: -webkit-linear-gradient(to right, #87CEFA, #4169E1);
-            background: linear-gradient(to right, #87CEFA, #4169E1); 
-            }
-            @import url('https://fonts.googleapis.com/css?family=Abel'); 
-            html, body {
-            background: #ffffff;
-            
-            font-family: Abel, Arial, Verdana, sans-serif;
-            }
+<h2 class="text-center text-light"><span style="color: aliceblue;  font-size: 40; font-style: initial;position:absolute; left: 30px;top: 15px;"><b>VACANTES</b></span></h2>
+<a href="/Ranking" class="btndash" style="color: aliceblue; position:absolute; right: 160px;top: 46px;"><b>Ranking</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
+<a href="/" class="btndash" style="color: aliceblue; position:absolute; right: 35px;top: 46px;"><b>Cerrar sesión</b></a> &nbsp;&nbsp;&nbsp;&nbsp;  
+
+<input type="hidden" value="{{tiempo}}" id="tbell">
+
+ <style>
+    header{
+    background: #122548;
+    display: block;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    height: 70px; 
+    }
         </style>
-     </header>   
+     </header> 
+     <br>
+    <br>
+    <br>  
       
      <br>
-    <div class="container"> 
+     <!-- html structure
+div, notification container
+    svg, bell icon
+    div, message
+-->
+<div class="notification" style="z-index: 2;">
+    <!-- the viewBox is 79x79 due to
+        - the size of the graphic, 65x75
+        - the stroke width, 4x4
+        - the empty space included on either side of the graphic to avoid cropping when rotating the bell's shape 10x0
+    -->
+    <svg class="notification__bell" viewBox="0 0 79 79" width="79" height="79">
+        <!-- group to apply default styles -->
+        <g
+            stroke="currentColor"
+            stroke-width="4">
+            <!-- group to translate the graphic enough to avoid cropping of the stroke -->
+            <g transform="translate(2 2)">
+                <!-- group to center the elements in the 75x75 box allocated to the bell
+                ! the group also modifies the transform-origin for the nested elements, which will be rotated from the center of the graphic
+                -->
+                <g transform="translate(37.5 0)">
+                    <circle
+                        cx="0"
+                        cy="8"
+                        r="8">
+                    </circle>
+                    <!-- circle animated alongside the bell
+                    ! the rotation occurs from the point described by the parent group
+                    -->
+                    <circle
+                        class="bell__clapper"
+                        cx="0"
+                        cy="63"
+                        r="12">
+                    </circle>
+                    <!-- bell shape
+                    ! the rotation occurs from the point described by the parent group
+                    -->
+                    <path
+                        class="bell__body"
+                        stroke-linejoin="round"
+                        d="M 0 8 a 25 25 0 0 1 25 25 v 17 l 5 6 q 3 7 -6 7 h -48 q -9 0 -6 -7 l 5 -6 v -17 a 25 25 0 0 1 25 -25">
+                    </path>
+                </g>
+            </g>
+        </g>
+    </svg>
+
+    <!-- message displaying the notification
+    include modifiers to change the style of the message
+    message--info
+    message--success
+    message--warning
+    message--danger
+
+    ! add a button to dismiss the message to the side
+    -->
+    <div class="notification__message message--info">
+        <h1>Info</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
+
+        <!-- x icon through a path element -->
+        <button aria-labelledby="button-dismiss">
+            <span id="button-dismiss" hidden>Dismiss</span>
+            <svg viewBox="0 0 100 100" width="10" height="10">
+                <!-- group to style the path -->
+                <g
+                    stroke="currentColor"
+                    stroke-width="6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="none">
+                    <!-- group to center and rotate the + sign to show an x sign instead -->
+                    <g transform="translate(50 50) rotate(45)">
+                        <!-- path describing two perpendicular lines -->
+                        <path
+                            d="M 0 -30 v 60 z M -30 0 h 60">
+                        </path>
+                    </g>
+                </g>
+            </svg>
+        </button>
+    </div>
+</div>
+    
+    <div class="container" style="z-index: 0;"> 
         <div class="row">
             <div class="col-lg-12">
-                <a href="/vacante"><button id="btnNuevo" type="button" class="btn btn-success" data-toggle="modal">Abrir nueva vacante</button>  </a>             
-            </div>  
-    </div>    
-    <br>  
-    <div class="container">   
-        </div> 
-        <div class="row">
+                <div class="section" id="contadores">
+                    <div class="container">
+                      <div class="row about-stats stats block-1-4 block-m-1-2 block-mob-full aos-init aos-animate" data-aos="fade-up">
+                        <a href="/vacante"><button id="btnNuevo" type="button" class="btn btn-success" style="background-color: #0CD977;" data-toggle="modal">Abrir nueva vacante</button>  </a>             
+            
+                        <div class="col-block stats__col ">
+                            <div class="stats__count" valor-final="{{SumaTotal[0][0]}}"></div>
+                            <h5>Postulantes registrados</h5>
+                        </div>
+                        <div class="col-block stats__col">
+                            <div class="stats__count" valor-final="{{SumaTotal[0][1]}}"></div>
+                            <h5>Postulantes pendientes</h5>
+                        </div>
+                        <div class="col-block stats__col">
+                            <div class="stats__count" valor-final="{{SumaTotal[0][2]}}"></div>
+                            <h5>Postulantes entrevistados</h5>
+                        </div>
+                        <div class="col-block stats__col">
+                            <div class="stats__count" valor-final="{{SumaTotal[0][3]}}"></div>
+                            <h5>Postulantes aceptados</h5>
+                        </div>
+                        <div class="col-block stats__col">
+                            <div class="stats__count" valor-final="{{SumaTotal[0][4]}}"></div>
+                            <h5>Postulantes rechazados</h5>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            
+            </div> 
+            <input type="hidden" id="win" value="{{estatus}}">
+    </div> 
+
+    <br>
+
+    <div class="container" style="z-index: 0;">   
+       
+        <div class="row ">
                 <div class="col-lg-12">
                     <div class="table-responsive"> 
                             
@@ -59,8 +185,12 @@
                         <thead class="text-center">
                             <tr>
                                 <th>Vacante</th>
-                                <th>Postulados</th>
+                                <th style="display: none;">Postulados</th>
                                 <th style="display: none;">ID</th>
+                                <th style="display: none;">Registrados</th>
+                                <th style="display: none;">Entrevistados</th>
+                                <th style="display: none;">Aceptados</th>
+                                <th style="display: none;">Rechazados</th>
                                 <th>Estatus</th>
                                 <th>Cerrar/Abrir Vacante</th>                               
                             </tr>
@@ -68,9 +198,13 @@
                         <tbody class="text-center">
                             {% for Dash in Dassh %}
                             <tr class="sombra">
-                                <td class="btnvac"><a href="#">{{ Dash.0}}</a></td>                                
-                                <td>{{ Dash.1 }}</td>
+                                <td class="btnvac"><a class="ttd" href="#">{{ Dash.0}}</a></td>                                
+                                <td style="display: none;" class = "btnpostu"><a href="#">{{ Dash.1 }}</a></td>
                                 <td style="display: none;">{{ Dash.14 }}</td>
+                                <td style="display: none;">{{ Dash.15 }}</td>
+                                <td style="display: none;">{{ Dash.16 }}</td>
+                                <td style="display: none;">{{ Dash.17 }}</td>
+                                <td style="display: none;">{{ Dash.18 }}</td>
                                 <td><div class="progreso">
                                     <div class="{{ Dash.3 }}">
                                     {% if "&#10003;" in Dash.10 %}
@@ -102,10 +236,10 @@
                                   </div>
                                 </td>
                                 {% if "&#10003;" in Dash.11 %}
-                                <td><div class='text-center'><div class='btn-group'><button class='btn btn-success btnAbrir'>Abrir</button></div></div></td> 
+                                <td><div class='text-center'><div class='btn-group'><button style="background-color: #0CD977;" class='btn btn-success btnAbrir'>Abrir</button></div></div></td> 
                                 {% else %} 
                                 <td><div class='text-center'><div class='btn-group'><button class='btn btn-danger btnBorrar'>Cerrar</button></div></div></td> 
-                                {% endif %}                                  
+                                {% endif %}                              
                             </tr> 
                             {% endfor %}                               
                         </tbody>                                     
@@ -129,7 +263,7 @@
             <div class="modal-body">
                 <div class="form-group">
                 <label for="nombre" class="col-form-label">Vacante:</label>
-                <input type="text" name= "correo" readonly class="form-control" id="nombre">
+                <input type="text" name= "correo" style="color: white;" readonly class="form-control" id="nombre">
                 </div>
                 <!--<div class="form-group">
                 <label for="pais" class="col-form-label">País:</label>
@@ -193,6 +327,7 @@
                 <div class="form-group">
                 <label for="nombre" class="col-form-label">Vacante:</label>
                 <input type="text" name= "correo"  class="form-control" id="nombre3">
+                <input type="hidden" name= "time"  class="form-control" value="{{tiempo}}">
                 <input type="hidden" name= "correo1" readonly class="form-control" id="nombre4">
                 </div>
                 <!--<div class="form-group">
@@ -235,6 +370,183 @@
     </div>
 </div>  
 
+<div class="modal fade" id="modalCRUD5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background-color: transparent; border-color: transparent;">          
+                <div class="wrapper">
+                    <div class="modall">
+                        <a href="#" id="closee" style="color: grey; position:absolute; right: 35px;">skip</a>
+                      <span class="emoji">👏</span>
+                      <h1>Good job, {{Ranking[0][0]}}!</h1>
+                      <p>Fuiste el ganador de la meta "{{Goal[0][1]}}", gracias por el tiempo que le has dedicado y por tu gran desempeño, ¡Sigue así!</p>
+                      <a href="/skip" class="modall-btn">¡Genial!, conoce el podio de ganadores</a>
+                    </div>                    
+                </div>  
+        </div>
+    </div>
+    <div id="confetti-wrapper">
+    </div>  
+</div>  
+
+<div class="modal fade" id="modalCRUD6" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background-color: transparent; border-color: transparent;">          
+                <div class="wrapper">
+                    <div class="modall">
+                        <a href="#" id="closee" style="color: grey; position:absolute; right: 35px;">skip</a>
+                      <span class="emoji">👏</span>
+                      <h1>¡UFF... Estuvo cerca!</h1>
+                      <p>El ganador de la meta "{{Goal[0][1]}}" fue {{Ranking[0][0]}} {{Ranking[0][1]}}, felicitalo por su logro y no te desanimes, ¡es una oportunidad para seguír mejorando!</p>
+                      <a href="/skip" class="modall-btn">¡Genial!, conoce el podio de ganadores</a>
+                    </div>                    
+                </div>  
+        </div>
+    </div>
+    <div id="confetti-wrapper">
+    </div>  
+</div> 
+
+<div class="modal fade" id="modalCRUD7" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header7">
+                <h5 class="modal-title7" id="exampleModalLabel7"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <form id="formPersonas7" method="POST" action="#">    
+            <div class="modal-body">
+                <div class="form-group">
+                <label for="nombre" readonly class="col-form-label">Postulantes pendientes:</label>
+                <input type="text" readonly class="form-control" id="pendientess">
+                <label for="nombre" readonly class="col-form-label">Postulantes entrevistados:</label>
+                <input type="text" readonly class="form-control" id="entrevistados">
+                <label for="nombre" readonly class="col-form-label">Postulantes aceptados:</label>
+                <input type="text" readonly  class="form-control" id="aceptados">
+                <label for="nombre" readonly class="col-form-label">Postulantes rechazados:</label>
+                <input type="text"  readonly class="form-control" id="rechazadoss">
+                </div>
+                <!--<div class="form-group">
+                <label for="pais" class="col-form-label">País:</label>
+                <input type="text" class="form-control" id="pais">
+                </div>                
+                <div class="form-group">
+                <label for="edad" class="col-form-label">Edad:</label>
+                <input type="number" class="form-control" id="edad">
+                </div>-->            
+            </div>
+            <div class="modal-footer">
+                <button type="button"  class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+            </div>
+        </form>    
+        </div>
+    </div>
+</div> 
+
+<div class="modal fade" id="modalCRUD55" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background:transparent;">
+                <meta charset="UTF-8">
+            
+                <div class='walkthrough show reveal'>
+                    <div class='walkthrough-pagination'>
+                        <a class='dot active'></a>
+                        <a class='dot'></a>
+                        <a class='dot'></a>
+                        <a class='dot'></a>
+                        <a class='dot'></a>
+                        <a class='dot'></a>
+                    </div>
+                    <div class='walkthrough-body'>
+                        <ul class='screens animate'>
+                            <li class='screen active'>
+                                <div class='mediaa logo'>
+                                    <img class='logo' img src="../static/file/lego.png">
+                                </div>
+                                <h3>
+                                    ¡Bienvenido!
+                                    <br>Aquí podrás saber un poco de como usar la plataforma</br>
+                                </h3>
+                               
+                            </li>
+                            <li class='screen'>
+                                <div class='media books'>
+                                    <img class='icon' img src="../static/file/gif1.gif">
+                                   
+                                </div>
+                                <h3>
+                                    
+                                    <br>Paso 1</br>
+                                </h3>
+                                <p>Selecciona la vacante a la cual deseas observar los datos de todos los postulantes al 
+                                  momento.
+                                </p>
+                            </li>
+                            <li class='screen'>
+                                <div class='media bars'>
+                                  <img class='icon' img src="../static/file/gif2.gif">
+                                </div>
+                                <h3>
+                                    
+                                    <br>Paso 2</br>
+                                </h3>
+                                <p>Después de haber realizado la entrevista, registra los comentarios en el apartado</p>
+                            </li>
+                            <li class='screen'>
+                                <div class='media files'>
+                                  <img class='icon' img src="../static/file/gif3.gif">
+                                </div>
+                                <h3>
+                                    
+                                    <br>Paso 3</br>
+                                </h3>
+                                <p>De acuerdo al porcetanje de compatibilidad y a los datos, Puedes aceptar o rechazar al postulante</p>
+                            </li>
+
+
+                            <li class='screen'>
+                                <div class='media comm'>
+                                  <img class='icon' img src="../static/file/gif4.gif">
+                                </div>
+                                <h3>
+                                    
+                                    <br>Paso 4</br>
+                                </h3>
+                                <p>Al elegir los candidatos necesarios para la vacante, se debe cerrar en el apartado de vacantes</p>
+                            </li>
+                            <li class='screen'>
+                              <div class='media comm'>
+                                <img class='icon' img src="../static/file/gif5.gif">
+                              </div>
+                              <h3>
+                                  
+                                  <br>Paso 5</br>
+                              </h3>
+                              <p>¡No olvides que compites con tus compañeros por increibles premios!</p>
+                          </li>
+
+
+                        </ul>
+
+                        <button class='prev-screen'>
+                            <i class='icon-angle-left'></i>
+                        </button>
+                        <button class='next-screen'>
+                            <i class='icon-angle-right'></i>
+                        </button>
+                    </div>
+                    <div class='walkthrough-footer'>
+                        <button class='button next-screen'>Siguiente</button>                      
+                        <button class='button finish close' id="btncerrarrr" data-dismiss disabled='true'>Listo</button>
+                    </div>
+                </div>
+                <!-- partial -->
+                <script src='https://code.jquery.com/jquery-1.12.0.min.js'></script>
+                
+        </div>
+    </div>
+</div> 
+
 
       
     <!-- jQuery, Popper.js, Bootstrap JS -->
@@ -249,6 +561,8 @@
     <!-- datatables JS -->
     <script type="text/javascript" src="../static/file/datatables/datatables.min.js"></script>    
     <script type="text/javascript" src="../static/file/mainDash.js"></script> 
+    <script src="../static/file/stats.js"></script>
+    <script src="../static/file/bell.js"></script>
     
     
     
@@ -257,5 +571,447 @@
 <style>
     table tbody .sombra:hover{
         background-color:rgba(197, 228, 253, 0.87);
+        
+    }
+
+    .ttd{
+        color: rgb(0, 96, 170);
     }
 </style>
+
+<style>
+
+    .walkthrough {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
+      background:  #ffffff;
+      border-radius: 20px;
+      display: none;
+      flex-direction: column;
+      flex: 0 0 auto;
+      font-size: 14px;
+      height: 610px;
+      overflow: hidden;
+      transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      width: 570px;
+      z-index: 1000;
+    }
+    .walkthrough.show {
+      display: flex;
+      opacity: 0;
+      transform: translateY(72px);
+    }
+    .walkthrough.reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .walkthrough .walkthrough-body {
+      align-items: center;
+      display: flex;
+      flex: 1;
+      text-align: center;
+    }
+    .walkthrough .walkthrough-body .prev-screen,
+    .walkthrough .walkthrough-body .next-screen {
+      align-self: stretch;
+      background: none;
+      border: 0;
+      margin-top: 40px;
+      color: rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      flex: 0 0 auto;
+      font-size: 24px;
+      opacity: 1;
+      outline: none;
+      padding: 16px;
+      transform: scale(1);
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      z-index: 1000;
+    }
+    .walkthrough .walkthrough-body .prev-screen:hover, .walkthrough .walkthrough-body .prev-screen:active,
+    .walkthrough .walkthrough-body .next-screen:hover,
+    .walkthrough .walkthrough-body .next-screen:active {
+      color: white;
+      transform-origin: center;
+      transform: scale(1.25);
+    }
+    .walkthrough .walkthrough-body .prev-screen:disabled,
+    .walkthrough .walkthrough-body .next-screen:disabled {
+      opacity: 0;
+    }
+    .walkthrough .walkthrough-body .prev-screen {
+      order: 1;
+    }
+    .walkthrough .walkthrough-body .next-screen {
+      order: 3;
+    }
+    .walkthrough .walkthrough-body .screens {
+      flex: 1;
+      align-self: stretch;
+      position: relative;
+      margin: 0 -16px;
+      padding: 0;
+      order: 2;
+    }
+    .walkthrough .walkthrough-body .screens .screen {
+      position: absolute;
+      list-style-type: none;
+    }
+    .walkthrough .walkthrough-body .media {
+      background:#ffffff;
+      border-radius: 132px;
+      height: 250px;
+      margin: 32px auto;
+      width: 250px;
+    }
+    .walkthrough .walkthrough-body .mediaa {
+      background:#122548;;
+      border-radius: 132px;
+      height: 250px;
+      margin: 32px auto;
+      width: 250px;
+    }
+    .walkthrough .walkthrough-body h3 {
+      line-height: 1.4em;
+      font-family:Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      font-size: 20px;
+      letter-spacing: 0.15em;
+      color: #122548;
+    }
+    .walkthrough .walkthrough-body p {
+      line-height: 1.6em;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 30px;
+      font-family:Verdana, Geneva, Tahoma, sans-serif;
+      text-align: center;
+      padding-top: 0;
+      color: #122548;;
+    }
+    .walkthrough .walkthrough-pagination {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+    }
+    .walkthrough .walkthrough-pagination .dot {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 20px;
+      height: 8px;
+      margin: 0 4px;
+      transform: scale(0.75);
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      width: 8px;
+    }
+    .walkthrough .walkthrough-pagination .dot.active {
+      background: #122548;
+      transform: scale(1);
+      transition-delay: 0.4s;
+    }
+    .walkthrough .walkthrough-footer {
+      display: flex;
+      flex: 0 0 auto;
+      justify-content: space-around;
+      padding: 0;
+    }
+    .walkthrough .walkthrough-footer button {
+      height: 40px;
+      border: 0;
+      background: #122548;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      border-radius: 0;
+      color: white;
+      flex: 1;
+      font-family:Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 19px;
+      margin: 0;
+      outline: 0;
+      padding: 12px;
+      transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      cursor: pointer;
+    }
+    .walkthrough .walkthrough-footer button:hover {
+      background: #1b3668;
+    }
+    .walkthrough .walkthrough-footer button:active {
+      background: #122548;
+    }
+    .walkthrough .walkthrough-footer button:disabled {
+      cursor: pointer;
+    }
+    .walkthrough .walkthrough-footer button.finish {
+      background: #008000;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      opacity: 0;
+      transform: scale(0, 1);
+      transform-origin: center;
+      transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .walkthrough .walkthrough-footer button.finish:hover {
+      background: #4d9cf6;
+    }
+    .walkthrough .walkthrough-footer button.finish:active {
+      background: #3e94f5;
+    }
+    .walkthrough .walkthrough-footer button.finish.active {
+      transform: scale(1, 1);
+      opacity: 1;
+    }
+    .walkthrough .screens {
+      margin: 0;
+    }
+    .walkthrough .screens .media .status-badge {
+      left: 136px;
+      opacity: 0;
+      position: absolute;
+      top: 104px;
+      transform: scale(0);
+      transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      transition-delay: 0.6s;
+    }
+    .walkthrough .screens .media .status-badge i {
+      display: inline;
+    }
+    .walkthrough .screens .mediaa.logo .logo {
+      margin-top: 10px;
+      opacity: 0;
+      transform: translateY(-60px);
+      transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      width: 250px;
+    }
+    .walkthrough .screens .media .icon {
+      position:absolute;
+      opacity: 0;
+      transform: translateY(-30px);
+      transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      width: 540px;
+      right: -5px;
+      top: 20px;
+      height: 295px;
+    }
+    
+    .walkthrough .screens .media.bars .icon {
+      transform: translate(40px, 20px);
+    }
+    .walkthrough .screens .media.bars .icon:nth-of-type(2) {
+      transform: scale(0.25);
+      transform-origin: 30% 54%;
+    }
+    .walkthrough .screens .media.bars .icon:nth-of-type(3) {
+      transform: scale(0.25);
+      transform-origin: 30% 40%;
+    }
+    .walkthrough .screens .media.bars .icon:nth-of-type(4) {
+      transform: scale(0.25);
+      transform-origin: 30% 26%;
+    }
+    .walkthrough .screens .media.files .icon {
+      transform: translate(40px, 20px);
+    }
+    .walkthrough .screens .media.comm .icon {
+      transform: scale(0.25);
+      transform-origin: 29% 73%;
+    }
+    .walkthrough .screens .media.comm .icon:nth-child(2) {
+      transform-origin: 66% 85%;
+    }
+    .walkthrough .screens .screen {
+      opacity: 0;
+      position: absolute;
+      transform: translateX(-72px);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .walkthrough .screens .screen.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      transition-delay: 0.4s;
+    }
+    .walkthrough .screens .screen.active ~ .screen {
+      opacity: 0;
+      transform: translateX(72px);
+    }
+    .walkthrough .screens .screen.active .media .status-badge {
+      opacity: 1;
+      transform: scale(1.75);
+    }
+    .walkthrough .screens .screen.active .mediaa.logo .logo {
+      opacity: 0.8;
+      transform: translateY(0);
+      transition-delay: 0.6s;
+    }
+    .walkthrough .screens .screen.active .mediaa.logo .status-badge {
+      transition-delay: 1s;
+    }
+    .walkthrough .screens .screen.active .media.books .icon {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.6s;
+    }
+    .walkthrough .screens .screen.active .media.books .icon:nth-child(2) {
+      transition-delay: 0.725s;
+    }
+    .walkthrough .screens .screen.active .media.books .icon:nth-child(3) {
+      transition-delay: 0.850s;
+    }
+    .walkthrough .screens .screen.active .media.books .status-badge {
+      transition-delay: 1.4s;
+    }
+    .walkthrough .screens .screen.active .media.bars .icon {
+      opacity: 1;
+      transform: translate(0) scale(1);
+      transition-delay: 0.6s;
+    }
+    .walkthrough .screens .screen.active .media.bars .icon:nth-child(2) {
+      transition-delay: 1.050s;
+    }
+    .walkthrough .screens .screen.active .media.bars .icon:nth-child(3) {
+      transition-delay: 0.925s;
+    }
+    .walkthrough .screens .screen.active .media.bars .icon:nth-child(4) {
+      transition-delay: 0.8s;
+    }
+    .walkthrough .screens .screen.active .media.files .icon {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.9s;
+    }
+    .walkthrough .screens .screen.active .media.files .icon:nth-child(3) {
+      transition-delay: 0.8s;
+    }
+    .walkthrough .screens .screen.active .media.files .icon:nth-child(2) {
+      transition-delay: 0.7s;
+    }
+    .walkthrough .screens .screen.active .media.files .icon:nth-child(1) {
+      transition-delay: 0.6s;
+    }
+    .walkthrough .screens .screen.active .media.files .status-badge {
+      transition-delay: 1.6s;
+    }
+    .walkthrough .screens .screen.active .media.comm .icon {
+      opacity: 1;
+      transform: scale(1);
+      transition-delay: 0.6s;
+    }
+    .walkthrough .screens .screen.active .media.comm .icon:nth-child(2) {
+      transition-delay: 0.8s;
+    }
+    .walkthrough .screens .screen.active .media.comm .status-badge {
+      transition-delay: 1.6s;
+    }
+    </style>
+<script>
+    (function() {
+    $(document).ready(function() {
+      var walkthrough;
+      walkthrough = {
+        index: 0,
+        nextScreen: function() {
+          if (this.index < this.indexMax()) {
+            this.index++;
+            return this.updateScreen();
+          }
+        },
+        prevScreen: function() {
+          if (this.index > 0) {
+            this.index--;
+            return this.updateScreen();
+          }
+        },
+        updateScreen: function() {
+          this.reset();
+          this.goTo(this.index);
+          return this.setBtns();
+        },
+        setBtns: function() {
+          var $lastBtn, $nextBtn, $prevBtn;
+          $nextBtn = $('.next-screen');
+          $prevBtn = $('.prev-screen');
+          $lastBtn = $('.finish');
+          if (walkthrough.index === walkthrough.indexMax()) {
+            $nextBtn.prop('disabled', true);
+            $prevBtn.prop('disabled', false);
+            return $lastBtn.addClass('active').prop('disabled', false);
+          } else if (walkthrough.index === 0) {
+            $nextBtn.prop('disabled', false);
+            $prevBtn.prop('disabled', true);
+            return $lastBtn.removeClass('active').prop('disabled', true);
+          } else {
+            $nextBtn.prop('disabled', false);
+            $prevBtn.prop('disabled', false);
+            return $lastBtn.removeClass('active').prop('disabled', true);
+          }
+        },
+        goTo: function(index) {
+          $('.screen').eq(index).addClass('active');
+          return $('.dot').eq(index).addClass('active');
+        },
+        reset: function() {
+          return $('.screen, .dot').removeClass('active');
+        },
+        indexMax: function() {
+          return $('.screen').length - 1;
+        },
+        closeModal: function() {
+          $('.walkthrough, .shade').removeClass('reveal');
+          return setTimeout((() => {
+            $('.walkthrough, .shade').removeClass('show');
+            this.index = 0;
+            return this.updateScreen();
+          }), 200);
+        },
+        openModal: function() {
+          $('.walkthrough, .shade').addClass('show');
+          setTimeout((() => {
+            return $('.walkthrough, .shade').addClass('reveal');
+          }), 200);
+          return this.updateScreen();
+        }
+      };
+      $('.next-screen').click(function() {
+        return walkthrough.nextScreen();
+      });
+      $('.prev-screen').click(function() {
+        return walkthrough.prevScreen();
+      });
+      $('.close').click(function() {
+        return walkthrough.closeModal();
+      });
+      $('.open-walkthrough').click(function() {
+        return walkthrough.openModal();
+      });
+      walkthrough.openModal();
+      
+      // Optionally use arrow keys to navigate walkthrough
+      return $(document).keydown(function(e) {
+        switch (e.which) {
+          case 37:
+            // left
+            walkthrough.prevScreen();
+            break;
+          case 38:
+            // up
+            walkthrough.openModal();
+            break;
+          case 39:
+            // right
+            walkthrough.nextScreen();
+            break;
+          case 40:
+            // down
+            walkthrough.closeModal();
+            break;
+          default:
+            return;
+        }
+        e.preventDefault();
+      });
+    });
+  
+  }).call(this);
+    
+  </script>    

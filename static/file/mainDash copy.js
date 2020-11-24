@@ -62,7 +62,7 @@ $(document).on("click", ".btnEdita", function(){
     $("#edad").val(edad);
     opcion = 2; //editar
     
-    $(".modal-header").css("background-color", "#007bff");
+    $(".modal-header").css("background-color", "#122548");
     $(".modal-header").css("color", "white");
     $(".modal-title").text("Editar Persona");            
     $("#modalCRUD").modal("show");  
@@ -105,7 +105,7 @@ $(document).on("click", ".btnBorrar", function(){
 
 $(document).on("click", ".btnDetalle", function(){    
     $("#formPersonas3").trigger("reset");
-    $(".modal-header3").css("background-color", "#4b8edb");
+    $(".modal-header3").css("background-color", "#122548");
     $(".modal-header3").css("color", "white");
     $(".modal-title3").text("Detalles del Postulante");            
     $("#modalCRUD3").modal("show");  
@@ -153,7 +153,7 @@ $(document).on("click", ".btnDetalle", function(){
     
 }); */   
 var estatus = document.getElementById('estatus')
-var nombre = document.getElementById('nombre').style.backgroundColor = "#4b8edb"
-$(".nombre").css("background-color", "#4b8edb");
+var nombre = document.getElementById('nombre').style.backgroundColor = "#122548"
+$(".nombre").css("background-color", "#122548");
 
 });

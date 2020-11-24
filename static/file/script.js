@@ -45,13 +45,26 @@ $( document ).ready(function() {
         success: function(data){
           console.log(data);
           $("#goals").val(data); 
-          $("#modalCRUD3").modal("hide"); 
+          window.location.reload(); 
+          
         }
     });  
     $("#modalCRUD3").modal("show"); 
     
 
                  
+});
+
+$(document).on("click", "#btndassh", function(){
+  console.log("dentro")
+  $("#modalCRUD3").modal("show");
+  
+});
+
+$(document).on("click", "#btndasssh", function(){
+  console.log("dentro")
+  $("#modalCRUD3").modal("show");
+  
 });
 
 });

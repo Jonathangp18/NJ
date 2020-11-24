@@ -62,7 +62,7 @@ $(document).on("click", ".btnEdita", function(){
     $("#edad").val(edad);
     opcion = 2; //editar
     
-    $(".modal-header").css("background-color", "#007bff");
+    $(".modal-header").css("background-color", "#122548");
     $(".modal-header").css("color", "white");
     $(".modal-title").text("Editar Persona");            
     $("#modalCRUD").modal("show");  
@@ -273,7 +273,7 @@ $(document).on("click", ".btnDetalle", function l(){
     
 }); */   
 var estatus = document.getElementById('estatus')
-var nombre = document.getElementById('nombre').style.backgroundColor = "#4b8edb"
-$(".nombre").css("background-color", "#4b8edb");
+var nombre = document.getElementById('nombre').style.backgroundColor = "#122548"
+$(".nombre").css("background-color", "#122548");
 
 });

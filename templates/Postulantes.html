@@ -6,11 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="#" />  
     <title>POSTULANTES</title>
+
       
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../static/file/bootstrap/css/bootstrap.min.css">
     <!-- CSS personalizado --> 
     <link rel="stylesheet" href="../static/file/main.css">  
+    <link href="../static/file/stats.css" rel="stylesheet"> 
+    <link rel="stylesheet" href="../static/file/bell.css">  
+    
+    
       
       
     <!--datables CSS básico-->
@@ -22,26 +27,154 @@
   <body> 
      <header>
          <style>
-             header{
-    background: -webkit-linear-gradient(to right, #87CEFA, #4169E1);
-  background: linear-gradient(to right, #87CEFA, #4169E1);
-  
-}
-         </style>
+            header{
+        background: #122548;
+        display: block;
+        position: fixed;
+        width: 100%;
+        z-index: 1;
+        height: 70px; 
+        }
+
+      
+        
+    </style>
    
 <!--<h3 class="text-center text-light">Tutorial</h3>-->
-         <h2 class="text-center text-light"><span style="color: aliceblue;  font-size: 10; font-style: initial;"><b>POSTULANTES PENDIENTES</b></span></h2> 
-         <a href="/dash" class="btndash" style="color: aliceblue; position:absolute; right: 490px; "><b>Vacantes</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
-         <a href="/selectB" class="btndash" style="color: aliceblue; position:absolute; right: 320px;"><b>Postulantes Aceptados</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
-         <a href="/selectC" class="btndash" style="color: aliceblue; position:absolute; right: 140px;"><b>Postulantes Rechazados</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
-         <a href="/" class="btndash" style="color: aliceblue; position:absolute; right: 35px;"><b>Cerrar sesión</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
-        
+         <h2 class="text-center text-light"><span style="color: aliceblue;  font-size: 40; font-style: initial;position:absolute; left: 30px;top: 15px;"><b>POSTULANTES PENDIENTES</b></span></h2> 
+         <a href="/dash" class="btndash" style="color: aliceblue; position:absolute; right: 490px; top: 46px; "><b>Vacantes</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
+         <a href="/selectB" class="btndash" style="color: aliceblue; position:absolute; right: 320px; top: 46px;"><b>Postulantes Aceptados</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
+         <a href="/selectC" class="btndash" style="color: aliceblue; position:absolute; right: 140px; top: 46px;"><b>Postulantes Rechazados</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
+         <a href="/" class="btndash" style="color: aliceblue; position:absolute; right: 35px; top: 46px;"><b>Cerrar sesión</b></a> &nbsp;&nbsp;&nbsp;&nbsp;
     
-     </header>  
+     </header> 
+
+     <input type="hidden" value="{{time}}" id="tbell">
+     
+    <div class="notification" style="z-index: 2; text-align: center;">
+      <!-- the viewBox is 79x79 due to
+          - the size of the graphic, 65x75
+          - the stroke width, 4x4
+          - the empty space included on either side of the graphic to avoid cropping when rotating the bell's shape 10x0
+      -->
+      <svg class="notification__bell" viewBox="0 0 79 79" width="79" height="79">
+          <!-- group to apply default styles -->
+          <g
+              stroke="currentColor"
+              stroke-width="4">
+              <!-- group to translate the graphic enough to avoid cropping of the stroke -->
+              <g transform="translate(2 2)">
+                  <!-- group to center the elements in the 75x75 box allocated to the bell
+                  ! the group also modifies the transform-origin for the nested elements, which will be rotated from the center of the graphic
+                  -->
+                  <g transform="translate(37.5 0)">
+                      <circle
+                          cx="0"
+                          cy="8"
+                          r="8">
+                      </circle>
+                      <!-- circle animated alongside the bell
+                      ! the rotation occurs from the point described by the parent group
+                      -->
+                      <circle
+                          class="bell__clapper"
+                          cx="0"
+                          cy="63"
+                          r="12">
+                      </circle>
+                      <!-- bell shape
+                      ! the rotation occurs from the point described by the parent group
+                      -->
+                      <path
+                          class="bell__body"
+                          stroke-linejoin="round"
+                          d="M 0 8 a 25 25 0 0 1 25 25 v 17 l 5 6 q 3 7 -6 7 h -48 q -9 0 -6 -7 l 5 -6 v -17 a 25 25 0 0 1 25 -25">
+                      </path>
+                  </g>
+              </g>
+          </g>
+      </svg>
+  
+      <!-- message displaying the notification
+      include modifiers to change the style of the message
+      message--info
+      message--success
+      message--warning
+      message--danger
+  
+      ! add a button to dismiss the message to the side
+      -->
+      <div class="notification__message message--info">
+          <h1>Info</h1>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
+  
+          <!-- x icon through a path element -->
+          <button aria-labelledby="button-dismiss">
+              <span id="button-dismiss" hidden>Dismiss</span>
+              <svg viewBox="0 0 100 100" width="10" height="10">
+                  <!-- group to style the path -->
+                  <g
+                      stroke="currentColor"
+                      stroke-width="6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      fill="none">
+                      <!-- group to center and rotate the + sign to show an x sign instead -->
+                      <g transform="translate(50 50) rotate(45)">
+                          <!-- path describing two perpendicular lines -->
+                          <path
+                              d="M 0 -30 v 60 z M -30 0 h 60">
+                          </path>
+                      </g>
+                  </g>
+              </svg>
+          </button>
+      </div>
+  </div>
+     
      <div class="container">  
-    </div>    
+    </div> 
+    <br> 
+    <br> 
+    <br> 
+    <br> 
+    <br> 
+    <div class="container" style="z-index: 0;"> 
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="section" id="contadores">
+                  <div class="container">
+                    <div class="row about-stats stats block-1-4 block-m-1-2 block-mob-full aos-init aos-animate" data-aos="fade-up">
+                      <div class="col-block stats__col ">
+                          <div class="stats__count" valor-final="{{SumaTotal[0][0]}}"></div>
+                          <h5>Postulantes registrados</h5>
+                      </div>
+                      <div class="col-block stats__col">
+                          <div class="stats__count" valor-final="{{SumaTotal[0][1]}}"></div>
+                          <h5>Postulantes pendientes</h5>
+                      </div>
+                      <div class="col-block stats__col">
+                          <div class="stats__count" valor-final="{{SumaTotal[0][2]}}"></div>
+                          <h5>Postulantes entrevistados</h5>
+                      </div>
+                      <div class="col-block stats__col">
+                          <div class="stats__count" valor-final="{{SumaTotal[0][3]}}"></div>
+                          <h5>Postulantes aceptados</h5>
+                      </div>
+                      <div class="col-block stats__col">
+                          <div class="stats__count" valor-final="{{SumaTotal[0][4]}}"></div>
+                          <h5>Postulantes rechazados</h5>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          
+          </div> 
+          <input type="hidden" id="win" value="{{estatus}}">
+    </div> 
+    
     <br>  
-    <div class="container">
+    <div class="container" style=" z-index: 0;">
         <div class="row">
                 <div class="col-lg-12">
                     <div class="table-responsive"> 
@@ -67,6 +200,7 @@
                             <th  style="display: none;">Comentarios</th>
                             <th >cv</th>
                             <th >Compatibilidad</th>
+                            <th >Palabras clave</th>
                             <th  >Acciones</th>
                             
                             
@@ -76,7 +210,7 @@
                         {% for postulante in postulantes %}
                         <tr class="sombra">
                             <td style="display: none;">{{ postulante.0 }}</td> 
-                            <td ><a class="btnDetalle"><p style="color:#4CADF4;"><u>{{ postulante.1 }}</u></p></a></td>                                
+                            <td ><a class="btnDetalle"><p style="color:rgb(0, 96, 170);"><u>{{ postulante.1 }}</u></p></a></td>                                
                             <td>{{ postulante.3 }}</td>
                             <td style="display: none;">{{ postulante.4 }}</td>
                             <td style="display: none;">{{ postulante.5 }}</td>
@@ -92,7 +226,7 @@
                             <td style="display: none;">{{ postulante.13 }}</td>
                             <td style="display: none;">{{ postulante.16 }}</td>
                             
-                            <td ><a href="../static/uploads/{{postulante.15 }}" download="{{ postulante.15 }}">{{ postulante.15 }}</a></td>
+                            <td ><a class="ttd" href="../static/uploads/{{postulante.15 }}" download="{{ postulante.15 }}">{{ postulante.15 }}</a></td>
                             <td>
                               <div class='flx'>
                                 <!-- Example 75% -->
@@ -102,7 +236,9 @@
                                     <text class='circle-text' x="50%" y="50%">{{ postulante.17 }} %</text>
                                   </svg>
                                 </div>
-                            </td>  
+                            </td> 
+                            <td>{{ postulante.18 }}</td>
+
                             
                             <td>
                               {% if "Registrado" in postulante.14 %}
@@ -110,7 +246,7 @@
 
                               {% else %}
                               <button class="btnEditar custom-btn btn-8" style=" background-color: #f0ecfc;
-                              background-image: linear-gradient(315deg, #43c459 0%, #43c459 74%);"><span><b>Admitir</b></span></button>
+                              background-image: linear-gradient(315deg,#0CD977 0%, #0CD977 74%);"><span><b>Admitir</b></span></button>
                               <button class=" btnBorrar custom-btn btn-8"  style=" background-color: #f0ecfc;
                               background-image: linear-gradient(315deg, #e03535 0%, #e03535 74%);" ><span><b>Rechazar</b></span></button>
                               {% endif %}
@@ -327,7 +463,13 @@ background-image: linear-gradient(315deg, #87CEFA 0%, #4169E1 74%);
             <div class="modal-body">
                 <div class="form-group">
                 <label for="nombre" class="col-form-label">Correo:</label>
-                <input type="text" name= "correo" readonly class="form-control" id="nombre">
+                <input type="text" style="color: white;" name= "correo" readonly class="form-control" id="nombre">
+                <label for="nombre" class="col-form-label">Salario:</label>
+                <div class="input-group-prepend">
+                  <div class="input-group-text" >$</div><input type="number" step=".01" name= "salario" class="form-control" id="salario">
+                </div>
+                <label for="nombre" class="col-form-label">Fecha de firma de contrato:</label>
+                <input type="date" name= "fecha" class="form-control" id="fecha">
                 </div>          
             </div>
             <div class="modal-footer">
@@ -352,6 +494,8 @@ background-image: linear-gradient(315deg, #87CEFA 0%, #4169E1 74%);
                 <div class="form-group">
                 <label for="nombre" class="col-form-label">Correo:</label>
                 <input type="text" name= "correo" readonly class="form-control" id="nombre2">
+                <label for="just" class="col-form-label">Justificación de rechazo:</label>
+                <Textarea name= "just" class="form-control"></Textarea>
                 </div>           
             </div>
             <div class="modal-footer">
@@ -495,7 +639,7 @@ background-image: linear-gradient(315deg, #87CEFA 0%, #4169E1 74%);
                   </div>
        
        
-       <form id="formPersonas56" method="POST" action="/coments">    
+       <form id="formPersonas56" method="POST" action="/comentss">    
                   <div class="modal-body">
                       <div class="form-group">
                           <input name= "comn" type="hidden" readonly id="idddq"></input>
@@ -516,7 +660,7 @@ background-image: linear-gradient(315deg, #87CEFA 0%, #4169E1 74%);
                   </div>
                   <div class="modal-footer">
                       <button type="button" id="btn90" class="btn btn-light" >Cancelar</button>
-                      <button type="submit" class="btn900 btn btn-dark" >Guardar</button>
+                      <button type="submit" class="btn900 btn btn-dark" data-dismiss >Guardar</button>
                   </div>
               </form>   
               </div>
@@ -532,7 +676,9 @@ background-image: linear-gradient(315deg, #87CEFA 0%, #4169E1 74%);
     <!-- datatables JS -->
     <script type="text/javascript" src="../static/file/datatables/datatables.min.js"></script>    
      
-    <script type="text/javascript" src="../static/file/Postulantes.js"></script>  
+    <script type="text/javascript" src="../static/file/Postulantes.js"></script> 
+    <script src="../static/file/stats.js"></script> 
+    <script src="../static/file/bell.js"></script>
 
     <style>
 @import
@@ -546,6 +692,10 @@ background: #ffffff;
 table tbody .sombra:hover{
         background-color:rgba(197, 228, 253, 0.87);
     }
+
+.ttd{
+    color: rgb(0, 96, 170);
+}
 
 .centerr {
   position: absolute;

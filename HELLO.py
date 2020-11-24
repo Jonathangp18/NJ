@@ -1,3 +1,4 @@
+from Modelo import SumaTotal
 from flask import Flask, render_template, request, json, url_for, redirect,send_from_directory,  g, session 
 from flaskext.mysql import MySQL
 import Modelo as Modelo
@@ -10,6 +11,8 @@ import time
 import re
 import PyPDF2
 import sentimientos as sentimientos
+from datetime import date
+from datetime import datetime
 
 mail = Mail()
 
@@ -152,27 +155,71 @@ def postedit3():
 @app.route("/a", methods=['POST'])
 def indexx():
     try:
+        _t=request.form.get('time')
         _p = request.form.get('correo1')
         if g.user:
             session.pop('vacante', None)
+            session.pop('time', None)
             session['vacante'] = _p
+            session['time'] = _t
             consulta = Modelo.SelectAll(_p)
-            return render_template("Postulantes.html", postulantes=consulta)
+            consulta2 = Modelo.VacTotal(_p)
+            return render_template("Postulantes.html", postulantes=consulta, time=_t, SumaTotal=consulta2)
         else:
             session.pop('vacante', None)
-            session['vacante'] = _p
+            session.pop('time', None)
+            session['time'] = _t
             consulta = Modelo.SelectAll(_p)
-            return render_template("Postulantes.html", postulantes=consulta)
+            consulta2 = Modelo.VacTotal(_p)
+            return render_template("Postulantes.html", postulantes=consulta, time=_t, SumaTotal=consulta2)
 
     except:
+        return redirect(url_for('errorr')) 
+
+@app.route("/dashh")
+def dashh():
+    try:
+        return redirect(url_for('dassh'))
+    except:
+        
         return redirect(url_for('errorr')) 
 
 @app.route("/dash")
 def dassh():
     try:
         consulta = Modelo.Dash()
-        return render_template("DashVacantes.html", Dassh=consulta)
+        SumaTotal = Modelo.SumaTotal()
+        consulta2 = Modelo.Ranking()
+        consulta3 = Modelo.Goal()
+        consulta4 = Modelo.UserSession(session['user'])
+        nombre10 = session['user']
+        ses= Modelo.sesiones(nombre10)
+        print(SumaTotal)
+
+
+        now = date.today()
+        i = -1
+        while True:
+            i = i + 1
+            if(consulta2[i][5] == session['user']):
+                break
+        
+        i = i + 1
+        print(i)
+        Resta = str(consulta3[0][2] - now)
+        tiempo = "¡Quedan "+Resta[:3]+"días para que concluya la meta, te encuentras en el "+str(i)+"° puesto!"
+        if consulta3[0][2] <= now and consulta2[0][5] == session['user'] and consulta4[0][6] != "Skip":
+            return render_template("DashVacantes.html", Dassh=consulta, Ranking=consulta2, Goal=consulta3, estatus="cerrada", tiempo= "¡El tiempo de la meta se ha concluido, terminaste en el "+ str(i) +"° puesto!", SumaTotal=SumaTotal, sess=ses)
+        if consulta3[0][2] <= now and consulta2[0][5] != session['user'] and consulta4[0][6] != "Skip":
+            return render_template("DashVacantes.html", Dassh=consulta, Ranking=consulta2, Goal=consulta3, estatus="cerradanoprimero", tiempo= "¡El tiempo de la meta se ha concluido, terminaste en el "+ str(i) +"° puesto!", SumaTotal=SumaTotal, sess=ses) 
+        if consulta3[0][2] <= now and consulta2[0][5] == session['user'] and consulta4[0][6] == "Skip":
+            return render_template("DashVacantes.html", Dassh=consulta, Ranking=consulta2, Goal=consulta3, estatus="Skip", tiempo= "¡El tiempo de la meta se ha concluido, terminaste en el "+ str(i) +"° puesto!", SumaTotal=SumaTotal, sess=ses)
+        if consulta3[0][2] <= now and consulta2[0][5] != session['user'] and consulta4[0][6] == "Skip":
+            return render_template("DashVacantes.html", Dassh=consulta, Ranking=consulta2, Goal=consulta3, estatus="Skip", tiempo= "¡El tiempo de la meta se ha concluido, terminaste en el "+ str(i) +"° puesto!", SumaTotal=SumaTotal, sess=ses)
+        if consulta3[0][2] > now:
+            return render_template("DashVacantes.html", Dassh=consulta, Ranking=consulta2, Goal=consulta3, estatus="abierta", tiempo= tiempo, SumaTotal=SumaTotal, sess=ses)
     except:
+        
         return redirect(url_for('errorr')) 
 
 @app.route("/closevac", methods=['POST'])
@@ -244,7 +291,7 @@ def editmeta():
     try:
         if 'user' in session:
             nombre1 = session['user']
-            Modelo.eventosedivac(nombre1)
+            mod=Modelo.eventarmeta(nombre1)
         
             print('Hiiii!')
             datos = request.get_json()
@@ -281,8 +328,7 @@ def lo():
             _contrasenaL = request.form['contrasenaL']
             _bool=Modelo.validar(user, _contrasenaL)
             session['user'] = user
-            
-            
+   
         if _bool == True:
             session['user'] = user
             Modelo.eventos(user, 'login', 'se logeo el usuario')
@@ -299,6 +345,8 @@ def lo():
             
     finally:
             print("Lets go!")
+
+
 
 @app.route('/log')
 def Login():
@@ -353,31 +401,54 @@ def sig():
 @app.route("/g",methods=['POST','GET'])
 def correo():
      _p = request.args.get('correo')
+     _s = request.args.get('salario')
+     _f = request.args.get('fecha')
      if _p:
          post= _p.strip()
-         _bool = Modelo.actualizarPostulante(post, session['vacante'], session['user'])
+         _bool = Modelo.actualizarPostulante(post, session['vacante'], session['user'], _s, _f)
          print(post)
          if _bool == True:
              msg = Message('Reclutamiento', sender= app.config['MAIL_USERNAME'], recipients = [_p])
-             msg.body = "Estimado candidato, agradecemos su interes, usted podra continuar con el proceso de selección."
+             msg.body = "Estimado candidato, agradecemos su interes, usted podra continuar con el proceso de selección. Ofrecemos prestaciones e ley, un sueldo de $"+_s+" mensuales y estaría firmando el contrato el día "+_f+"."
              mail.send(msg)
              nombre1 = session['user']
              Modelo.eventosAC(nombre1)
              return redirect(url_for('selectB'))
          if _bool == False:
              return redirect(url_for('errorr')) 
+
+@app.route("/ga",methods=['POST','GET'])
+def correog():
+     _p = request.args.get('correo')
+     _s = request.args.get('salario')
+     _f = request.args.get('fecha')
+     if _p:
+         post= _p.strip()
+         _bool = Modelo.actualizarPostulante1(post, session['vacante'], session['user'], _s, _f)
+         print(post)
+         if _bool == True:
+             msg = Message('Reclutamiento', sender= app.config['MAIL_USERNAME'], recipients = [_p])
+             msg.body = "Estimado candidato, agradecemos su interes, usted podra continuar con el proceso de selección. Ofrecemos prestaciones e ley, un sueldo de $"+_s+" mensuales y estaría firmando el contrato el día "+_f+"."
+             mail.send(msg)
+             nombre1 = session['user']
+             Modelo.eventosAC(nombre1)
+             return redirect(url_for('selectB'))
+         if _bool == False:
+             print("aaaaaaaa")
+             return redirect(url_for('errorr')) 
             
       
 @app.route("/d",methods=['POST','GET'])
 def detalles():
      _p = request.args.get('correo')
+     _j = request.args.get('just')
      if _p:
          post= _p.strip()        
-         _bool = Modelo.actualizarPostulante2(_p, session['vacante'], session['user'])
+         _bool = Modelo.actualizarPostulante2(_p, session['vacante'], session['user'], _j)
          print(post)
          if _bool == True:
              msg = Message('Reclutamiento', sender= app.config['MAIL_USERNAME'], recipients = [_p])
-             msg.body = "Estimado candidato, agredecemos su interes pero no fue seleccionado para seguir con el proceso."
+             msg.body = "Estimado candidato, agredecemos su interes pero no fue seleccionado para seguir con el proceso, debido a que "+_j+"."
              mail.send(msg)
              nombre1 = session['user']
              Modelo.eventosRE(nombre1)
@@ -386,7 +457,24 @@ def detalles():
          if _bool == False:
              return redirect(url_for('errorr')) 
             
-
+@app.route("/dr",methods=['POST','GET'])
+def detallesdr():
+     _p = request.args.get('correo')
+     _j = request.args.get('just')
+     if _p:
+         post= _p.strip()        
+         _bool = Modelo.actualizarPostulante4(_p, session['vacante'], session['user'], _j)
+         print(post)
+         if _bool == True:
+             msg = Message('Reclutamiento', sender= app.config['MAIL_USERNAME'], recipients = [_p])
+             msg.body = "Estimado candidato, agredecemos su interes pero no fue seleccionado para seguir con el proceso, debido a que "+_j+"."
+             mail.send(msg)
+             nombre1 = session['user']
+             Modelo.eventosRE(nombre1)
+             return redirect(url_for('selectC'))
+             
+         if _bool == False:
+             return redirect(url_for('errorr')) 
     
 
 @app.route("/selectA")
@@ -394,8 +482,8 @@ def selectA():
     try:
         consulta = Modelo.SelectAll(session['vacante'])
         nombre1 = session['user']
-        Modelo.eventos1(nombre1)
-        return render_template("Postulantes.html", postulantes=consulta)
+        consulta2 = Modelo.VacTotal(session['vacante'])
+        return render_template("Postulantes.html", postulantes=consulta, time=session['time'], SumaTotal=consulta2)
     except:
         return redirect(url_for('errorr')) 
 
@@ -404,8 +492,8 @@ def selectB():
     try:
         consulta = Modelo.SelectB(session['vacante'])
         nombre1 = session['user']
-        Modelo.eventos2(nombre1)
-        return render_template("Postulantes2.html", postulantes=consulta)
+        consulta2 = Modelo.VacTotal(session['vacante'])
+        return render_template("Postulantes2.html", postulantes=consulta, time=session['time'], SumaTotal=consulta2)
     except:
         return redirect(url_for('errorr')) 
 
@@ -414,8 +502,8 @@ def selectC():
     try:
         consulta = Modelo.SelectC(session['vacante'])
         nombre1 = session['user']
-        Modelo.eventos3(nombre1)
-        return render_template("Postulantes3.html", postulantes=consulta)
+        consulta2 = Modelo.VacTotal(session['vacante'])
+        return render_template("Postulantes3.html", postulantes=consulta, time=session['time'], SumaTotal=consulta2)
     except:
         return redirect(url_for('errorr')) 
 
@@ -476,24 +564,44 @@ def comentaa():
          _comn = request.form.get('comn')
 
          if _com and _comn:
-             _bool = Modelo.com(_com, _comn, session['user'])
-             consultaa = sentimientos.cogn(_com)
-
-            # datos=request.get_json()
-            # consulta=sentimientos.cogn(datos['_com'])
-             #print(datos)
-             print(consultaa)
-             #axx = { "alerta": resultado, "origen" : "Servidor", "idioma": consulta['documents'][0]['confidenceScores']['positive']}
-             _bool2 = Modelo.cog(consultaa, _comn)
-             nombre1 = session['user']
-             Modelo.eventoscom(nombre1)
-         if _bool == True:
-            return redirect(url_for('selectA')) 
-
-         if _bool == False:
+             if len(_com)>5:
+                 _bool = Modelo.com(_com, _comn, session['user'], session['vacante'])
+                 (axx, w) = sentimientos.cogn(_com)
+                 _bool2 = Modelo.cog(axx, w ,_comn)
+                 nombre1 = session['user']
+                 Modelo.eventoscom(nombre1)
+                 if _bool == True:
+                     return redirect(url_for('selectA')) 
+                 if _bool == False:
+                     return redirect(url_for('errorr')) 
+             else:
+                return redirect(url_for('errorr'))          
+    except:
             return redirect(url_for('errorr')) 
-            
+    finally:
+            print("Lets go!")
 
+
+@app.route('/comentss',methods=['GET','POST'])
+def comentss():
+    
+    try:
+         _com = request.form.get('com')
+         _comn = request.form.get('comn')
+
+         if _com and _comn:
+             if len(_com)>5:
+                 _bool = Modelo.comn(_com, _comn, session['user'], session['vacante'])
+                 (axx, w) = sentimientos.cogn(_com)
+                 _bool2 = Modelo.cog(axx, w ,_comn)
+                 nombre1 = session['user']
+                 Modelo.eventoscom(nombre1)
+                 if _bool == True:
+                     return redirect(url_for('selectA')) 
+                 if _bool == False:
+                     return redirect(url_for('errorr')) 
+             else:
+                return redirect(url_for('errorr'))          
     except:
             return redirect(url_for('errorr')) 
     finally:
@@ -618,6 +726,40 @@ def Ranking():
     except:
         return redirect(url_for('errorr')) 
 
+@app.route("/skip")
+def Skip():
+    try:
+        Skip=Modelo.UserSkip(session['user'])
+        if Skip == True:
+            return redirect(url_for('Ranking'))
+        if Skip == False:
+            return redirect(url_for('errorr'))
+    except:
+        return redirect(url_for('errorr')) 
+
+@app.route("/skipp", methods=['POST'])
+def Skipp():
+    try:
+        print("entro skip")
+        datos = request.get_json()
+        print(datos)
+        Modelo.UserSkip(session['user'])
+        return datos
+    except:
+        return redirect(url_for('errorr')) 
+
+@app.route("/sumsession", methods=['POST'])
+def sumsession():
+    try:
+        print("entro sumsession")
+        datos = request.get_json()
+        print(datos)
+        Modelo.Sumsession(session['user'])
+        return datos
+    except:
+        return redirect(url_for('errorr')) 
+
+
 @app.route("/f",methods=['GET', 'POST'])
 def archivo():
     try:
@@ -640,64 +782,104 @@ def archivo():
                     return render_template('Gracias.html')
                else:
                    _encontrados3=ParseoForm2(_datos)
+                   _encontrados33=ParseoForm22(_datos)
                    if _encontrados3:
                        _encontrados3=_encontrados3[0]
+                   elif _encontrados33:
+                       _encontrados3=_encontrados33[0]
                    else:
-                       _encontrados3=''
+                       _encontrados3=' '
+
                    _encontrados4=ParseoForm3(_datos)
+                   _encontrados44=ParseoForm33(_datos)
                    if _encontrados4:
                        _encontrados4=_encontrados4[0]
+                   elif _encontrados44:
+                       _encontrados4=_encontrados44[0]
                    else:
-                       _encontrados4=''
+                       _encontrados4=' '
+
+                   print(_encontrados4.replace(' ',''))
+
                    _encontrados5=ParseoForm4(_datos)
+                   _encontrados55=ParseoForm44(_datos)
                    if _encontrados5:
                        _encontrados5=_encontrados5[0]
+                   elif _encontrados55:
+                       _encontrados5=_encontrados55[0]
                    else:
-                       _encontrados5=''
+                       _encontrados5=' '
+
                    _encontrados6=ParseoForm5(_datos)
+                   _encontrados66=ParseoForm55(_datos)
                    if _encontrados6:
                        _encontrados6=_encontrados6[0]
+                   elif _encontrados66:
+                       _encontrados6=_encontrados66[0]
                    else:
-                       _encontrados6=''
+                       _encontrados6=' '
+
                    _encontrados7=ParseoForm6(_datos)
+                   _encontrados77=ParseoForm66(_datos)
                    if _encontrados7:
                        _encontrados7=_encontrados7[0]
+                   elif _encontrados77:
+                       _encontrados7=_encontrados77[0]
                    else:
-                       _encontrados7=''
+                       _encontrados7=' '
+
                    _encontrados8=ParseoForm7(_datos)
+                   _encontrados88=ParseoForm77(_datos)
                    if _encontrados8:
                        _encontrados8=_encontrados8[0]
+                   elif _encontrados88:
+                       _encontrados8=_encontrados88[0]
                    else:
-                       _encontrados8=''
+                       _encontrados8=' '
+
                    _encontrados9=ParseoForm8(_datos)
+                   _encontrados99=ParseoForm88(_datos)
                    if _encontrados9:
                        _encontrados9=_encontrados9[0]
+                   elif _encontrados99:
+                       _encontrados9=_encontrados99[0]
                    else:
-                       _encontrados9=''
+                       _encontrados9=' '
+
                    _encontrados10=ParseoForm9(_datos)
+                   _encontrados100=ParseoForm99(_datos)
                    if _encontrados10:
                        _encontrados10=_encontrados10[0]
+                   elif _encontrados100:
+                       _encontrados10=_encontrados100[0]
                    else:
-                       _encontrados10=''
+                       _encontrados10=' '
+                       
                    _encontrados11=ParseoForm10(_datos)
+                   _encontrados111=ParseoForm100(_datos)
                    if _encontrados11:
                        _encontrados11=_encontrados11[0]
-                   else:
-                       _encontrados11=''
+                   elif _encontrados111:
+                       _encontrados11=_encontrados111[0]
+                   else: 
+                       _encontrados11=' '
+
                    _encontrados12=ParseoForm11(_datos)
+                   _encontrados122=ParseoForm111(_datos)
                    if _encontrados12:
                        _encontrados12=_encontrados12[0]
+                   elif _encontrados122:
+                       _encontrados12=_encontrados122[0]
                    else:
-                       _encontrados12=''
-                   _encontrados13=ParseoForm12(_datos)
-                   if _encontrados13:
-                       _encontrados13=_encontrados13[0]
-                   else:
-                       _encontrados13=''
+                       _encontrados12='55'
+
+                   print(_encontrados12.replace(' ',''))
+
+                   
                    _name=request.form['name']
                    _vac=request.form['vac']
                    _pdf=Modelo.Eventocv(_nomarchivo)
-                   return render_template('form2.html', pdfs=_pdf, name=_name, correo=_encontrados3, edad=int(_encontrados4), dir=_encontrados5, lic=_encontrados6, esc=_encontrados7, prom=_encontrados8, idi=_encontrados9, exp=_encontrados10, cur=_encontrados11, cel= int(_encontrados12), vac=_vac)
+                   return render_template('form2.html', pdfs=_pdf, name=_name, correo=_encontrados3, edad=int(_encontrados4), dir=_encontrados5, lic=_encontrados6, esc=_encontrados7, prom=_encontrados8, idi=_encontrados9, exp=_encontrados10, cur=_encontrados11, cel= int(_encontrados12.replace('  ','')), vac=_vac)
             else:
                 _openvacante=Modelo.openvacante()
                 return render_template('form.html', openvacantes=_openvacante, alert='Tu archivo no es PDF')
@@ -867,9 +1049,21 @@ def ParseoForm2(_texto):
     _todos=re.findall(_patron2, _texto, re.MULTILINE)
     return _todos 
 
+def ParseoForm22(_texto):
+    _patron2 = (r"CORREO:(.*\n"
+	r".*)")
+    _todos=re.findall(_patron2, _texto, re.MULTILINE)
+    return _todos 
+
 def ParseoForm3(_texto):
     _patron2 = (r"Edad:(.*\n"
 	r".*\n"
+	r".*)")
+    _todos=re.findall(_patron2, _texto, re.MULTILINE)
+    return _todos 
+
+def ParseoForm33(_texto):
+    _patron2 = (r"Edad: (.*\n"
 	r".*)")
     _todos=re.findall(_patron2, _texto, re.MULTILINE)
     return _todos 
@@ -881,9 +1075,21 @@ def ParseoForm4(_texto):
     _todos=re.findall(_patron2, _texto, re.MULTILINE)
     return _todos 
 
+def ParseoForm44(_texto):
+    _patron2 = (r"DIRECCION:(.*\n"
+	r".*)")
+    _todos=re.findall(_patron2, _texto, re.MULTILINE)
+    return _todos 
+
 def ParseoForm5(_texto):
     _patron2 = (r"LICENCIATURA:(.*\n"
 	r".*\n"
+	r".*)")
+    _todos=re.findall(_patron2, _texto, re.MULTILINE)
+    return _todos
+
+def ParseoForm55(_texto):
+    _patron2 = (r"LICENCIATURA:(.*\n"
 	r".*)")
     _todos=re.findall(_patron2, _texto, re.MULTILINE)
     return _todos
@@ -895,9 +1101,21 @@ def ParseoForm6(_texto):
     _todos=re.findall(_patron2, _texto, re.MULTILINE)
     return _todos
 
+def ParseoForm66(_texto):
+    _patron2 = (r"ESCUELA:(.*\n"
+	r".*)")
+    _todos=re.findall(_patron2, _texto, re.MULTILINE)
+    return _todos
+
 def ParseoForm7(_texto):
     _patron2 = (r"PROMEDIO:(.*\n"
 	r".*\n"
+	r".*)")
+    _todos=re.findall(_patron2, _texto, re.MULTILINE)
+    return _todos
+
+def ParseoForm77(_texto):
+    _patron2 = (r"PROMEDIO:(.*\n"
 	r".*)")
     _todos=re.findall(_patron2, _texto, re.MULTILINE)
     return _todos
@@ -909,9 +1127,21 @@ def ParseoForm8(_texto):
     _todos=re.findall(_patron2, _texto, re.MULTILINE)
     return _todos
 
+def ParseoForm88(_texto):
+    _patron2 = (r"IDIOMAS:(.*\n"
+	r".*)")
+    _todos=re.findall(_patron2, _texto, re.MULTILINE)
+    return _todos
+
 def ParseoForm9(_texto):
     _patron2 = (r"EXPERIENCIA:(.*\n"
 	r".*\n"
+	r".*)")
+    _todos=re.findall(_patron2, _texto, re.MULTILINE)
+    return _todos
+
+def ParseoForm99(_texto):
+    _patron2 = (r"EXPERIENCIA:(.*\n"
 	r".*)")
     _todos=re.findall(_patron2, _texto, re.MULTILINE)
     return _todos
@@ -923,6 +1153,12 @@ def ParseoForm10(_texto):
     _todos=re.findall(_patron2, _texto, re.MULTILINE)
     return _todos
 
+def ParseoForm100(_texto):
+    _patron2 = (r"CURSOS:(.*\n"
+	r".*)")
+    _todos=re.findall(_patron2, _texto, re.MULTILINE)
+    return _todos
+
 def ParseoForm11(_texto):
     _patron2 = (r"CELULAR:(.*\n"
 	r".*\n"
@@ -930,7 +1166,20 @@ def ParseoForm11(_texto):
     _todos=re.findall(_patron2, _texto, re.MULTILINE)
     return _todos
 
+def ParseoForm111(_texto):
+    _patron2 = (r"CELULAR:(.*\n"
+	r".*)")
+    _todos=re.findall(_patron2, _texto, re.MULTILINE)
+    return _todos
+
 def ParseoForm12(_texto):
+    _patron2 = (r"APTITUDES:(.*\n"
+	r".*\n"
+	r".*)")
+    _todos=re.findall(_patron2, _texto, re.MULTILINE)
+    return _todos
+
+def ParseoForm122(_texto):
     _patron2 = (r"APTITUDES:(.*\n"
 	r".*\n"
 	r".*)")

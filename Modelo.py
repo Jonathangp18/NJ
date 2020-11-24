@@ -1244,25 +1244,3 @@ def sesiones(_user):
     finally:
         cursor.close()
         conn.close()
-
-def eventarmeta(nombre1):
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        print("entro al sql")
-        print(nombre1)
-        sqlCreateS="INSERT INTO EVENTS (id_user, stage, stageinfo) VALUES ('"+nombre1+"', 'Se editó una meta ', 'se editó el premio de la meta')"
-        cursor.execute(sqlCreateS)
-        print(sqlCreateS)
-        data = cursor.fetchall()
-        if len(data) == 0:
-            conn.commit()  
-            return True  
-        else:
-            return redirect(url_for('errorr')) 
-
-    except:
-        return redirect(url_for('errorr')) 
-    finally:
-       cursor.close() 
-       conn.close()

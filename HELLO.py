@@ -291,7 +291,6 @@ def editmeta():
     try:
         if 'user' in session:
             nombre1 = session['user']
-            mod=Modelo.eventarmeta(nombre1)
         
             print('Hiiii!')
             datos = request.get_json()
